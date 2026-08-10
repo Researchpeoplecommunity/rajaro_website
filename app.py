@@ -48,14 +48,19 @@ def create_app():
     app.register_blueprint(admin_bp)
 
     with app.app_context():
-        migrate_schema()
-        if not AdminUser.query.first():
-            admin = AdminUser(username=Config.ADMIN_USERNAME)
-            admin.set_password(Config.ADMIN_PASSWORD)
-            db.session.add(admin)
-            db.session.commit()
-        seed_database()
-        patch_database()
+        try:
+            migrate_schema()
+            if not AdminUser.query.first():
+                admin = AdminUser(username=Config.ADMIN_USERNAME)
+                admin.set_password(Config.ADMIN_PASSWORD)
+                db.session.add(admin)
+                db.session.commit()
+            seed_database()
+            patch_database()
+        except Exception:
+            db.session.rollback()
+            app.logger.exception("Database initialization failed")
+            raise
 
     return app
 
