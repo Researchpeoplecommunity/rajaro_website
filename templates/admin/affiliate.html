@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% block title %}Affiliate{% endblock %}
+{% block content %}
+<h1>Affiliate Program</h1>
+<form method="post" class="admin-form">
+  <input type="hidden" name="action" value="content">
+  <div class="form-group"><label>Headline</label><input type="text" name="affiliate_headline" value="{{ content.affiliate_headline }}"></div>
+  <div class="form-group"><label>CTA</label><input type="text" name="affiliate_cta" value="{{ content.affiliate_cta }}"></div>
+  <div class="form-group"><label>Email</label><input type="email" name="affiliate_email" value="{{ content.affiliate_email }}"></div>
+  <button type="submit" class="btn btn-primary">Save Content</button>
+</form>
+
+<h2>Applications ({{ applications|length }})</h2>
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Date</th><th>Update</th></tr></thead>
+  <tbody>
+    {% for a in applications %}
+    <tr>
+      <td>{{ a.name }}</td><td>{{ a.email }}</td><td>{{ a.status }}</td><td>{{ a.created_at.strftime('%d %b') }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin.update_affiliate_status', aid=a.id) }}" class="inline-form">
+          <select name="status"><option {% if a.status=='pending' %}selected{% endif %}>pending</option><option {% if a.status=='approved' %}selected{% endif %}>approved</option><option {% if a.status=='rejected' %}selected{% endif %}>rejected</option></select>
+          <button type="submit" class="btn btn-sm">Update</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

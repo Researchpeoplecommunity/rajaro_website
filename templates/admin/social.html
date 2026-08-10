@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block title %}Social Links{% endblock %}
+{% block content %}
+<h1>Social Media Links</h1>
+<p>Manage official social profiles shown on About Us and the footer.</p>
+<form method="post" class="admin-form">
+  {% for link in links %}
+  <div class="form-group">
+    <label>
+      <input type="checkbox" name="active_{{ link.platform }}" {% if link.is_active %}checked{% endif %}>
+      {{ link.label }}
+    </label>
+    <input type="url" name="url_{{ link.platform }}" value="{{ link.url }}" placeholder="https://">
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Save Social Links</button>
+</form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% macro lead_sentence(text) %}
+{% if text and text.strip() %}
+{% set lead = text.strip().replace('\n', ' ').split('. ')[0] %}
+<p class="content-lead">{{ lead }}{% if not lead.endswith('.') %}.{% endif %}</p>
+{% endif %}
+{% endmacro %}
+
+{% macro content_highlights(text, max_bullets=4) %}
+{% if text and text.strip() %}
+{% set cleaned = text.strip().replace('\n', ' ') %}
+{% set parts = cleaned.split('. ') %}
+{% set lead = parts[0] ~ ('.' if parts|length > 1 else '') %}
+<p class="content-lead">{{ lead }}</p>
+{% if parts|length > 1 %}
+<ul class="content-highlights">
+  {% for s in parts[1:max_bullets + 1] %}
+  {% if s.strip() %}
+  <li>{{ s.strip() }}{% if not s.strip().endswith('.') %}.{% endif %}</li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+{% endif %}
+{% endmacro %}

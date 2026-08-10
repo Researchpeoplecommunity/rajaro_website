@@ -1,0 +1,26 @@
+{% extends "admin/base.html" %}
+{% block title %}Blog{% endblock %}
+{% block content %}
+<h1>Blog Posts <a href="{{ url_for('admin.add_blog') }}" class="btn btn-sm btn-primary">Add Post</a></h1>
+<table class="admin-table">
+  <thead><tr><th>Order</th><th>Title</th><th>Published</th><th>Status</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for post in posts %}
+    <tr>
+      <td>{{ post.sort_order or 0 }}</td>
+      <td>{{ post.title }}</td>
+      <td>{{ post.published_at.strftime('%d %b %Y') if post.published_at else '—' }}</td>
+      <td>{{ 'Published' if post.is_published else 'Draft' }}</td>
+      <td>
+        <a href="{{ url_for('admin.edit_blog', bid=post.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('admin.move_blog', bid=post.id, direction='up') }}" style="display:inline"><button class="btn btn-sm">↑</button></form>
+        <form method="post" action="{{ url_for('admin.move_blog', bid=post.id, direction='down') }}" style="display:inline"><button class="btn btn-sm">↓</button></form>
+        <form method="post" action="{{ url_for('admin.delete_blog', bid=post.id) }}" style="display:inline" onsubmit="return confirm('Delete this post?')">
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin{% endblock %} — Rajaro Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+</head>
+<body class="admin-body">
+  {% if current_user.is_authenticated %}
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">Rajaro Admin</div>
+    <nav>
+      <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('admin.content') }}">Site Content</a>
+      <a href="{{ url_for('admin.services') }}">Services</a>
+      <a href="{{ url_for('admin.products') }}">Products</a>
+      <a href="{{ url_for('admin.about') }}">About</a>
+      <a href="{{ url_for('admin.social_links') }}">Social Links</a>
+      <a href="{{ url_for('admin.learning') }}">Learning</a>
+      <a href="{{ url_for('admin.affiliate_admin') }}">Affiliate</a>
+      <a href="{{ url_for('admin.contact_admin') }}">Contact</a>
+      <a href="{{ url_for('admin.consultations') }}">Consultations</a>
+      <a href="{{ url_for('admin.suggestions_admin') }}">Suggestions</a>
+      <a href="{{ url_for('admin.jobs') }}">Jobs</a>
+      <a href="{{ url_for('admin.applications') }}">Applications</a>
+      <a href="{{ url_for('admin.blogs') }}">Blog</a>
+      <a href="{{ url_for('admin.notifications') }}">Notifications</a>
+      <a href="{{ url_for('public.home') }}" target="_blank">View Site</a>
+      <a href="{{ url_for('admin.logout') }}">Logout</a>
+    </nav>
+  </aside>
+  {% endif %}
+
+  <main class="admin-main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="admin-flash admin-flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

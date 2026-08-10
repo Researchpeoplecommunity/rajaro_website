@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Home — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="hero home-hero">
+  <div class="hero-bg" aria-hidden="true">
+    <span class="hero-orb hero-orb-1"></span>
+    <span class="hero-orb hero-orb-2"></span>
+    <span class="hero-orb hero-orb-3"></span>
+    <span class="hero-ring hero-ring-1"></span>
+    <span class="hero-ring hero-ring-2"></span>
+  </div>
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <p class="eyebrow">Welcome to Rajaro</p>
+      <h1>{{ hero_title }}</h1>
+      <p class="hero-sub">{{ hero_subtitle }}</p>
+      <p class="hero-hook">Something powerful is being built from India — for the world. The question is: where will you fit in?</p>
+      <div class="hero-actions">
+        <a href="#explore" class="btn btn-primary">Start Exploring</a>
+        <a href="{{ url_for('public.about') }}" class="btn btn-outline">Who We Are</a>
+      </div>
+    </div>
+    <div class="promises-card">
+      <h3>Our Promise</h3>
+      <ul class="promise-list">
+        {% for p in promises[:2] %}
+        <li>{{ p.text }}</li>
+        {% endfor %}
+      </ul>
+      <a href="{{ url_for('public.about') }}" class="hero-teaser-link">There's more to the story →</a>
+    </div>
+  </div>
+</section>
+
+<section class="curiosity-band">
+  <div class="container">
+    <p class="curiosity-text">What if your next breakthrough is just one click away?</p>
+  </div>
+</section>
+
+<section class="section home-explore" id="explore">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow dark">Your journey starts here</p>
+      <h2>Choose your path</h2>
+      <p class="section-lead">We don't put everything on one page — each door opens to something different. Pick what pulls you in.</p>
+    </div>
+
+    <div class="explore-grid">
+      <a href="{{ url_for('public.about') }}" class="explore-card">
+        <span class="explore-label">01</span>
+        <h3>About Us</h3>
+        <p>Who stands behind the promise?</p>
+        <span class="explore-cta">Discover the story →</span>
+      </a>
+      <a href="{{ url_for('public.services') }}" class="explore-card">
+        <span class="explore-label">02</span>
+        <h3>Services</h3>
+        <p>What could we build together?</p>
+        <span class="explore-cta">See what's possible →</span>
+      </a>
+      <a href="{{ url_for('public.products') }}" class="explore-card explore-card-featured">
+        <span class="explore-label">03</span>
+        <h3>Products</h3>
+        <p>Two platforms. One bold vision.</p>
+        <span class="explore-cta">Meet Subitra & RajaroRise →</span>
+      </a>
+      <a href="{{ url_for('public.learning') }}" class="explore-card">
+        <span class="explore-label">04</span>
+        <h3>Learning Program</h3>
+        <p>Ready to grow beyond today?</p>
+        <span class="explore-cta">Explore programs →</span>
+      </a>
+      <a href="{{ url_for('public.career') }}" class="explore-card">
+        <span class="explore-label">05</span>
+        <h3>Career</h3>
+        <p>Could your next chapter start here?</p>
+        <span class="explore-cta">View opportunities →</span>
+      </a>
+      <a href="{{ url_for('public.blog') }}" class="explore-card">
+        <span class="explore-label">06</span>
+        <h3>Blog</h3>
+        <p>Ideas worth your time.</p>
+        <span class="explore-cta">Read latest insights →</span>
+      </a>
+      <a href="{{ url_for('public.suggestions') }}" class="explore-card">
+        <span class="explore-label">07</span>
+        <h3>Suggestions</h3>
+        <p>Help shape what we build next.</p>
+        <span class="explore-cta">Share your idea →</span>
+      </a>
+      <a href="{{ url_for('public.contact') }}" class="explore-card explore-card-accent">
+        <span class="explore-label">→</span>
+        <h3>Contact</h3>
+        <p>When you're ready — we're listening.</p>
+        <span class="explore-cta">Let's connect →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt home-closer">
+  <div class="container cta-banner cta-curiosity">
+    <div>
+      <p class="eyebrow dark">Still curious?</p>
+      <h2>The best conversations start with a single hello.</h2>
+      <p>Don't scroll past your next opportunity — step through the door.</p>
+    </div>
+    <a href="{{ url_for('public.contact') }}" class="btn btn-primary btn-lg">Get in Touch</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+{% block title %}Suggestions{% endblock %}
+{% block content %}
+<h1>Client Suggestions</h1>
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Products</th>
+      <th>Services</th>
+      <th>PDF</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in submissions %}
+    <tr class="{% if not s.is_read %}unread{% endif %}">
+      <td>{{ s.name }}</td>
+      <td>{{ s.email }}</td>
+      <td>{{ s.selected_products or '—' }}</td>
+      <td>{{ s.selected_services or '—' }}</td>
+      <td>{% if s.pdf_filename %}✓{% else %}—{% endif %}</td>
+      <td>{{ 'Read' if s.is_read else 'New' }}</td>
+      <td>{{ s.created_at.strftime('%d %b %Y') }}</td>
+      <td>
+        <a href="{{ url_for('admin.view_suggestion', sid=s.id) }}">View</a>
+        <form method="post" action="{{ url_for('admin.delete_suggestion', sid=s.id) }}" style="display:inline" onsubmit="return confirm('Delete this suggestion?')">
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="8">No suggestions yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% macro service_lead(text) %}
+{% if text %}
+{% set lead = text.strip().replace('\n', ' ').split('. ')[0] %}
+<p class="service-card-lead">{{ lead }}{% if not lead.endswith('.') %}.{% endif %}</p>
+{% endif %}
+{% endmacro %}

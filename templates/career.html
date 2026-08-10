@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import lead_sentence %}
+{% block title %}Career — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">Join Rajaro</p>
+    <h1>Build the future with us</h1>
+    <p class="lead">Open roles and internships — find where you belong.</p>
+  </div>
+</section>
+
+<section class="overview-bar">
+  <div class="container overview-grid">
+    <div class="overview-item">
+      <span class="overview-num">{{ jobs|length }}</span>
+      <span class="overview-label">Open positions</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Hiring</span>
+      <span class="overview-label">& internships</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Remote & onsite</span>
+      <span class="overview-label">Flexible modes</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Apply now</span>
+      <span class="overview-label">Quick process</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if jobs %}
+    <div class="job-list">
+      {% for job in jobs %}
+      <article class="job-card">
+        <div class="job-card-main">
+          <span class="card-tag">{{ job.reference_code }}</span>
+          <h2><a href="{{ url_for('public.job_detail', job_id=job.id) }}">{{ job.title }}</a></h2>
+          <div class="meta-pills">
+            {% if job.mode %}<span class="meta-pill">{{ job.mode }}</span>{% endif %}
+            {% if job.job_type %}<span class="meta-pill">{{ job.job_type }}</span>{% endif %}
+            {% if job.location %}<span class="meta-pill">{{ job.location }}</span>{% endif %}
+            {% if job.expiry_date %}<span class="meta-pill">Until {{ job.expiry_date.strftime('%d %b %Y') }}</span>{% endif %}
+          </div>
+          {{ lead_sentence(job.short_description or job.description) }}
+        </div>
+        <div class="job-card-actions">
+          <a href="{{ url_for('public.job_detail', job_id=job.id) }}" class="btn btn-outline">Details</a>
+          <a href="{{ url_for('public.job_apply', job_id=job.id, type='hiring') }}" class="btn btn-primary">Apply</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-note">No open positions right now — check back soon.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

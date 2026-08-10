@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+<h1>Notifications</h1>
+<form method="post" class="admin-form">
+  <div class="form-group"><label>Title</label><input type="text" name="title" required></div>
+  <div class="form-group"><label>Message</label><textarea name="message" rows="4" required></textarea></div>
+  <label><input type="checkbox" name="is_active" checked> Active</label>
+  <button type="submit" class="btn btn-primary">Add Notification</button>
+</form>
+
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Active</th><th>Date</th><th>Toggle</th></tr></thead>
+  <tbody>
+    {% for n in notifications %}
+    <tr>
+      <td>{{ n.title }}</td>
+      <td>{{ 'Yes' if n.is_active else 'No' }}</td>
+      <td>{{ n.created_at.strftime('%d %b %Y') }}</td>
+      <td><form method="post" action="{{ url_for('admin.toggle_notification', nid=n.id) }}"><button class="btn btn-sm">Toggle</button></form></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block title %}Site Content{% endblock %}
+{% block content %}
+<h1>Site Content</h1>
+<form method="post" class="admin-form">
+  <div class="form-grid">
+    {% for key in ['site_name','hero_title','hero_subtitle','hero_intro','services_intro','consultation_headline','consultation_text','social_facebook','social_twitter','social_linkedin','social_instagram'] %}
+    <div class="form-group {% if key in ['hero_intro','services_intro','consultation_text'] %}full-width{% endif %}">
+      <label for="content_{{ key }}">{{ key|replace('_',' ')|title }}</label>
+      {% if key in ['hero_intro','services_intro','consultation_text'] %}
+      <textarea id="content_{{ key }}" name="content_{{ key }}" rows="4">{{ content.get(key, '') }}</textarea>
+      {% else %}
+      <input type="text" id="content_{{ key }}" name="content_{{ key }}" value="{{ content.get(key, '') }}">
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <button type="submit" class="btn btn-primary">Save Content</button>
+</form>
+
+<hr>
+<h2>Hero Promises</h2>
+<ul class="admin-list">
+  {% for p in promises %}
+  <li>{{ p.text }}
+    <form method="post" action="{{ url_for('admin.delete_promise', pid=p.id) }}" style="display:inline">
+      <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+<form method="post" action="{{ url_for('admin.add_promise') }}" class="inline-form">
+  <input type="text" name="text" placeholder="New promise text" required>
+  <button type="submit" class="btn btn-sm">Add Promise</button>
+</form>
+{% endblock %}

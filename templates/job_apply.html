@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Apply — {{ job.title }} — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">{% if app_type == 'internship' %}Internship{% else %}Hiring{% endif %}</p>
+    <h1>Apply now</h1>
+    <p class="lead">{{ job.title }} · {{ job.reference_code }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container form-card wide-form">
+    <p class="card-tag">Application form</p>
+    <div id="apply-result"></div>
+    <form hx-post="{{ url_for('public.job_apply', job_id=job.id) }}"
+          hx-target="#apply-result"
+          hx-swap="innerHTML"
+          hx-encoding="multipart/form-data"
+          enctype="multipart/form-data">
+      <input type="hidden" name="application_type" value="{{ app_type }}">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="full_name">1. Full Name *</label>
+          <input type="text" id="full_name" name="full_name" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">2. Phone</label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email">
+        </div>
+
+        {% if app_type == 'internship' %}
+        <div class="form-group">
+          <label for="current_school">3. Current School</label>
+          <input type="text" id="current_school" name="current_school">
+        </div>
+        <div class="form-group">
+          <label for="year_of_study">4. What year are you?</label>
+          <input type="text" id="year_of_study" name="year_of_study">
+        </div>
+        <div class="form-group full-width">
+          <label for="address">5. Address</label>
+          <textarea id="address" name="address" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="country">6. Country</label>
+          <input type="text" id="country" name="country">
+        </div>
+        <div class="form-group">
+          <label for="field_of_study">7. Field of Study</label>
+          <input type="text" id="field_of_study" name="field_of_study">
+        </div>
+        <div class="form-group">
+          <label for="timezone">8. What time zone are you in?</label>
+          <input type="text" id="timezone" name="timezone">
+        </div>
+        <div class="form-group full-width">
+          <label for="work_experience">9. Do you have any work experience?</label>
+          <textarea id="work_experience" name="work_experience" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="gpa">10. What is your current GPA?</label>
+          <input type="text" id="gpa" name="gpa">
+        </div>
+        <div class="form-group">
+          <label for="preferred_start">12. Preferred Start Date</label>
+          <input type="date" id="preferred_start" name="preferred_start">
+        </div>
+        <div class="form-group">
+          <label for="preferred_end">Preferred End Date</label>
+          <input type="date" id="preferred_end" name="preferred_end">
+        </div>
+        <div class="form-group">
+          <label for="first_internship">13. Is this your first internship?</label>
+          <select id="first_internship" name="first_internship">
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="internship_goals">14. What are you hoping to achieve in the internship?</label>
+          <textarea id="internship_goals" name="internship_goals" rows="3"></textarea>
+        </div>
+        <div class="form-group full-width">
+          <label for="skills_to_demonstrate">15. Primary skills/soft skills/tech skills you will demonstrate?</label>
+          <textarea id="skills_to_demonstrate" name="skills_to_demonstrate" rows="3"></textarea>
+        </div>
+        <div class="form-group full-width">
+          <label for="working_style">16. Individual contributor or team worker? Explain your working style.</label>
+          <textarea id="working_style" name="working_style" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="specialization_field">17. Field you'd like to specialize in at Rajaro</label>
+          <input type="text" id="specialization_field" name="specialization_field">
+        </div>
+        <div class="form-group full-width">
+          <label for="learn_during_internship">18. Anything specific you would like to learn?</label>
+          <textarea id="learn_during_internship" name="learn_during_internship" rows="3"></textarea>
+        </div>
+        <div class="form-group full-width checkbox-group">
+          <label>
+            <input type="checkbox" name="code_of_conduct" required>
+            19. I will diligently adhere to all code of conduct and maintain professionalism at Rajaro.
+          </label>
+        </div>
+        {% else %}
+        <div class="form-group full-width">
+          <label for="work_experience">Work Experience</label>
+          <textarea id="work_experience" name="work_experience" rows="4"></textarea>
+        </div>
+        {% endif %}
+
+        <div class="form-group full-width">
+          <label for="resume">11. Upload Resume (PDF, DOC, DOCX)</label>
+          <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx">
+        </div>
+      </div>
+
+      <p class="form-consent">By submitting this form, you consent to the collection and processing of your personal information for recruitment purposes.</p>
+      <button type="submit" class="btn btn-primary">Submit Application</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+{% block title %}Edit Job{% endblock %}
+{% block content %}
+<h1>Edit Job</h1>
+<form method="post" class="admin-form">
+  <div class="form-group"><label>Title</label><input type="text" name="title" value="{{ job.title }}"></div>
+  <div class="form-group"><label>Mode</label><input type="text" name="mode" value="{{ job.mode or '' }}"></div>
+  <div class="form-group"><label>Job Type</label><input type="text" name="job_type" value="{{ job.job_type or '' }}"></div>
+  <div class="form-group"><label>Shift</label><input type="text" name="shift" value="{{ job.shift or '' }}"></div>
+  <div class="form-group"><label>Location</label><input type="text" name="location" value="{{ job.location or '' }}"></div>
+  <div class="form-group"><label>Openings</label><input type="number" name="openings" value="{{ job.openings }}"></div>
+  <div class="form-group"><label>Income</label><input type="text" name="income" value="{{ job.income or '' }}"></div>
+  <div class="form-group"><label>Skills</label><input type="text" name="skills" value="{{ job.skills or '' }}"></div>
+  <div class="form-group"><label>Reference Code</label><input type="text" name="reference_code" value="{{ job.reference_code or '' }}"></div>
+  <div class="form-group"><label>Expiry</label><input type="date" name="expiry_date" value="{{ job.expiry_date.isoformat() if job.expiry_date else '' }}"></div>
+  <div class="form-group"><label>Education</label><input type="text" name="education" value="{{ job.education or '' }}"></div>
+  <div class="form-group"><label>Gender</label><input type="text" name="gender" value="{{ job.gender or 'Any' }}"></div>
+  <div class="form-group"><label>Short Description</label><textarea name="short_description" rows="3">{{ job.short_description or '' }}</textarea></div>
+  <div class="form-group"><label>Description</label><textarea name="description" rows="10">{{ job.description or '' }}</textarea></div>
+  <label><input type="checkbox" name="is_active" {% if job.is_active %}checked{% endif %}> Active</label>
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% if product.image_filename %}
+<img src="{{ url_for('public.uploaded_file', filename=product.image_filename) }}" alt="{{ product.name }}" class="product-logo">
+{% elif product.slug == 'subitra' %}
+<img src="{{ url_for('static', filename='images/subitra-logo.png') }}" alt="{{ product.name }}" class="product-logo">
+{% elif product.slug == 'rajarorise' %}
+<img src="{{ url_for('static', filename='images/rajaro-logo.png') }}" alt="{{ product.name }}" class="product-logo">
+{% else %}
+<div class="product-logo-placeholder">{{ product.name[0] }}</div>
+{% endif %}

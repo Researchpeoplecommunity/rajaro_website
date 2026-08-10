@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+{% block title %}Jobs{% endblock %}
+{% block content %}
+<h1>Job Postings <a href="{{ url_for('admin.add_job') }}" class="btn btn-sm btn-primary">Add Job</a></h1>
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Ref</th><th>Location</th><th>Active</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for job in jobs %}
+    <tr><td>{{ job.title }}</td><td>{{ job.reference_code }}</td><td>{{ job.location }}</td><td>{{ 'Yes' if job.is_active else 'No' }}</td><td><a href="{{ url_for('admin.edit_job', jid=job.id) }}">Edit</a></td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

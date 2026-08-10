@@ -1,0 +1,14 @@
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.db
+.env
+rajaro.db
+static/uploads/*
+!static/uploads/.gitkeep
+.DS_Store
+Thumbs.db
+*.log
+.cursor/
+pdf_content.txt

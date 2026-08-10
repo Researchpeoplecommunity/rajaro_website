@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import content_highlights %}
+{% block title %}About Us — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero about-hero">
+  <div class="container about-hero-inner">
+    <p class="eyebrow dark">About Rajaro</p>
+    <h1>Technology that builds empires</h1>
+    <p class="lead">We partner with ambitious teams to engineer products, platforms, and growth — from India to the world.</p>
+  </div>
+</section>
+
+<section class="about-facts">
+  <div class="container about-facts-grid">
+    <div class="about-fact">
+      <span class="about-fact-label">Focus</span>
+      <strong>Digital Transformation</strong>
+    </div>
+    <div class="about-fact">
+      <span class="about-fact-label">Expertise</span>
+      <strong>Software · AI · Cloud · Marketing</strong>
+    </div>
+    <div class="about-fact">
+      <span class="about-fact-label">Partners</span>
+      <strong>Startups to Enterprise</strong>
+    </div>
+    <div class="about-fact">
+      <span class="about-fact-label">Approach</span>
+      <strong>Innovate · Build · Scale</strong>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-col about-pillars">
+    <article class="about-pillar">
+      <span class="about-pillar-tag">What we do</span>
+      <h2>Build & transform</h2>
+      {{ content_highlights(what_we_do) }}
+    </article>
+    <article class="about-pillar">
+      <span class="about-pillar-tag">Who we are</span>
+      <h2>People behind the work</h2>
+      {{ content_highlights(who_we_are) }}
+    </article>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container about-mv-grid">
+    <article class="about-mv-card">
+      <span class="about-mv-icon" aria-hidden="true">◎</span>
+      <h3>Mission</h3>
+      {{ content_highlights(mission, 2) }}
+    </article>
+    <article class="about-mv-card">
+      <span class="about-mv-icon" aria-hidden="true">◈</span>
+      <h3>Vision</h3>
+      {{ content_highlights(vision, 2) }}
+    </article>
+  </div>
+</section>
+
+{% if why_items %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Why Rajaro?</h2>
+      <p class="section-lead">What you get when you work with us — at a glance.</p>
+    </div>
+    <div class="why-grid">
+      {% for item in why_items %}
+      <div class="why-card">
+        <span class="why-check" aria-hidden="true">✓</span>
+        <span>{{ item.text }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if clients %}
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Trusted by</h2>
+      <p class="section-lead">Teams and brands we've partnered with.</p>
+    </div>
+    <div class="client-grid">
+      {% for client in clients %}
+      <div class="client-badge">{{ client.name }}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if founder %}
+<section class="section">
+  <div class="container">
+    <div class="founder-block">
+      <span class="about-pillar-tag">Leadership</span>
+      <h2>About the Founder</h2>
+      <blockquote class="founder-quote">{{ founder }}</blockquote>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if social_links %}
+<section class="section section-alt">
+  <div class="container about-connect">
+    <h2>Connect with us</h2>
+    <p class="section-lead">Follow Rajaro on our official channels.</p>
+    {% include "partials/social_icons.html" %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Search{% if query %} — {{ query }}{% endif %} — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">Find anything</p>
+    <h1>Search</h1>
+    <form action="{{ url_for('public.search') }}" method="get" class="search-form-lg search-form-hero">
+      <input type="search" name="q" value="{{ query }}" placeholder="Jobs, blogs, services…" autofocus>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+</section>
+
+{% if query %}
+<section class="section">
+  <div class="container">
+    {% set total = results.jobs|length + results.blogs|length + results.services|length %}
+    <p class="search-summary">{{ total }} result{{ 's' if total != 1 else '' }} for <strong>"{{ query }}"</strong></p>
+
+    {% if results.jobs %}
+    <div class="search-group">
+      <h2>Jobs <span class="search-count">{{ results.jobs|length }}</span></h2>
+      <div class="search-result-grid">
+        {% for job in results.jobs %}
+        <a href="{{ url_for('public.job_detail', job_id=job.id) }}" class="search-result-card">
+          <span class="card-tag">{{ job.reference_code or 'Job' }}</span>
+          <strong>{{ job.title }}</strong>
+          {% if job.location %}<span class="search-result-meta">{{ job.location }}</span>{% endif %}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if results.blogs %}
+    <div class="search-group">
+      <h2>Blog <span class="search-count">{{ results.blogs|length }}</span></h2>
+      <div class="search-result-grid">
+        {% for post in results.blogs %}
+        <a href="{{ url_for('public.blog_detail', slug=post.slug) }}" class="search-result-card">
+          <span class="card-tag">Article</span>
+          <strong>{{ post.title }}</strong>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if results.services %}
+    <div class="search-group">
+      <h2>Services <span class="search-count">{{ results.services|length }}</span></h2>
+      <div class="search-result-grid">
+        {% for svc in results.services %}
+        <a href="{{ url_for('public.services') }}#service-{{ svc.id }}" class="search-result-card">
+          <span class="card-tag">Service</span>
+          <strong>{{ svc.title }}</strong>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if not results.jobs and not results.blogs and not results.services %}
+    <p class="empty-note">No results found. Try different keywords.</p>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

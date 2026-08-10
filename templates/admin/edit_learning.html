@@ -1,0 +1,16 @@
+{% extends "admin/base.html" %}
+{% block title %}Edit Learning Program{% endblock %}
+{% block content %}
+<h1>Edit: {{ program.title }}</h1>
+<form method="post" enctype="multipart/form-data" class="admin-form">
+  <div class="form-group"><label>Title</label><input type="text" name="title" value="{{ program.title }}"></div>
+  <div class="form-group"><label>Description</label><textarea name="description" rows="5">{{ program.description or '' }}</textarea></div>
+  <div class="form-group"><label>Image</label><input type="file" name="image" accept="image/*"></div>
+  {% if program.image_filename %}<p>Current: {{ program.image_filename }}</p>{% endif %}
+  <div class="form-group"><label>CTA Text</label><input type="text" name="cta_text" value="{{ program.cta_text or 'Learn More' }}"></div>
+  <div class="form-group"><label>CTA URL</label><input type="url" name="cta_url" value="{{ program.cta_url or '' }}"></div>
+  <label><input type="checkbox" name="is_active" {% if program.is_active %}checked{% endif %}> Active</label>
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<a href="{{ url_for('admin.learning') }}">← Back</a>
+{% endblock %}

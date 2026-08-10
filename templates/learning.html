@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import lead_sentence %}
+{% block title %}Learning Program — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">Grow with Rajaro</p>
+    <h1>Learning Program</h1>
+    <p class="lead">{{ headline }}</p>
+    {{ lead_sentence(intro) }}
+  </div>
+</section>
+
+<section class="overview-bar">
+  <div class="container overview-grid">
+    <div class="overview-item">
+      <span class="overview-num">{{ programs|length }}</span>
+      <span class="overview-label">Programs</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Courses</span>
+      <span class="overview-label">Webinars & events</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Practical</span>
+      <span class="overview-label">Skill-focused</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Career-ready</span>
+      <span class="overview-label">Outcomes</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Pick your path</h2>
+      <p class="section-lead">Each program opens a door — choose where you want to grow.</p>
+    </div>
+    {% if programs %}
+    <div class="program-grid">
+      {% for program in programs %}
+      <article class="program-card">
+        {% if program.image_filename %}
+        <img src="{{ url_for('public.uploaded_file', filename=program.image_filename) }}" alt="{{ program.title }}" class="program-image">
+        {% endif %}
+        <span class="card-tag">Program</span>
+        <h3>{{ program.title }}</h3>
+        {{ lead_sentence(program.description) }}
+        {% if program.cta_url %}
+        <a href="{{ program.cta_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          {{ program.cta_text or 'Learn More' }}
+        </a>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-note">No learning programs available yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

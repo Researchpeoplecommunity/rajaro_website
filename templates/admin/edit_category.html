@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+{% block title %}Edit Category{% endblock %}
+{% block content %}
+<h1>Edit: {{ category.title }}</h1>
+<form method="post" class="admin-form">
+  <div class="form-group"><label>Title</label><input type="text" name="title" value="{{ category.title }}"></div>
+  <div class="form-group"><label>Group</label>
+    <select name="service_group">
+      <option value="technology" {% if category.service_group == 'technology' %}selected{% endif %}>Technology Services</option>
+      <option value="digital_marketing" {% if category.service_group == 'digital_marketing' %}selected{% endif %}>Digital Marketing Services</option>
+    </select>
+  </div>
+  <div class="form-group"><label>Subtitle</label><input type="text" name="subtitle" value="{{ category.subtitle or '' }}"></div>
+  <div class="form-group"><label>Description</label><textarea name="description" rows="4">{{ category.description or '' }}</textarea></div>
+  <label><input type="checkbox" name="is_active" {% if category.is_active %}checked{% endif %}> Active</label>
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<h2>Expertise Items</h2>
+<ul class="admin-list">
+  {% for item in category.items|sort(attribute='sort_order') %}
+  <li>
+    <form method="post" action="{{ url_for('admin.edit_service_item', iid=item.id) }}" class="inline-form">
+      <input type="text" name="name" value="{{ item.name }}">
+      <label><input type="checkbox" name="is_active" {% if item.is_active %}checked{% endif %}> Active</label>
+      <button type="submit" class="btn btn-sm">Save</button>
+    </form>
+    <form method="post" action="{{ url_for('admin.move_service_item', iid=item.id, direction='up') }}" style="display:inline"><button class="btn btn-sm">↑</button></form>
+    <form method="post" action="{{ url_for('admin.move_service_item', iid=item.id, direction='down') }}" style="display:inline"><button class="btn btn-sm">↓</button></form>
+    <form method="post" action="{{ url_for('admin.delete_service_item', iid=item.id) }}" style="display:inline">
+      <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+<form method="post" action="{{ url_for('admin.add_service_item', cid=category.id) }}" class="inline-form">
+  <input type="text" name="name" placeholder="New expertise item" required>
+  <button type="submit" class="btn btn-sm">Add Item</button>
+</form>
+<a href="{{ url_for('admin.services') }}">← Back to Services</a>
+{% endblock %}

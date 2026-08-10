@@ -1,0 +1,15 @@
+{% macro about_highlights(text, max_bullets=4) %}
+{% set cleaned = text.strip().replace('\n', ' ') %}
+{% set parts = cleaned.split('. ') %}
+{% set lead = parts[0] ~ ('.' if parts|length > 1 else '') %}
+<p class="about-lead">{{ lead }}</p>
+{% if parts|length > 1 %}
+<ul class="about-highlights">
+  {% for s in parts[1:max_bullets + 1] %}
+  {% if s.strip() %}
+  <li>{{ s.strip() }}{% if not s.strip().endswith('.') %}.{% endif %}</li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import content_highlights %}
+{% block title %}{{ product.name }} — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container product-hero">
+    <div class="product-hero-content">
+      <p class="eyebrow dark">Product</p>
+      <h1>{{ product.name }}</h1>
+      {% if product.tagline %}<p class="lead">{{ product.tagline }}</p>{% endif %}
+    </div>
+    <div class="product-hero-logo">
+      {% include "partials/product_logo.html" %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container detail-layout">
+    <div class="detail-main">
+      {{ content_highlights(product.description, 5) }}
+      {% if features %}
+      <div class="detail-section">
+        <h2>Key capabilities</h2>
+        <div class="feature-tags">
+          {% for feature in features %}
+          <span class="service-tag">{{ feature.text }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <aside class="detail-aside">
+      <div class="aside-card">
+        <h3>Ready to explore?</h3>
+        <p>See the platform in action or dive deeper into features.</p>
+        <div class="stack-actions">
+          {% if product.cta_url %}
+          <a href="{{ product.cta_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+            {{ product.cta_text or 'Try it' }}
+          </a>
+          {% endif %}
+          <a href="{{ url_for('public.products') }}" class="btn btn-outline">All Products</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

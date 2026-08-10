@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block title %}Learning{% endblock %}
+{% block content %}
+<h1>Learning Programs</h1>
+<form method="post" class="admin-form">
+  <div class="form-group"><label>Section Headline</label><input type="text" name="learning_headline" value="{{ content.learning_headline }}"></div>
+  <div class="form-group"><label>Section Intro</label><textarea name="learning_intro" rows="4">{{ content.learning_intro }}</textarea></div>
+  <button type="submit" name="action" value="content" class="btn btn-primary">Save Section Text</button>
+</form>
+
+<hr>
+<h2>Programs</h2>
+<p><em>Add programs below. Use Edit to upload images and set CTA links.</em></p>
+<form method="post" enctype="multipart/form-data" class="admin-form">
+  <input type="hidden" name="action" value="add">
+  <div class="form-grid">
+    <div class="form-group"><label>Title *</label><input type="text" name="service_title" required></div>
+    <div class="form-group"><label>CTA Text</label><input type="text" name="cta_text" value="Learn More"></div>
+    <div class="form-group full-width"><label>Description</label><textarea name="service_description" rows="3"></textarea></div>
+    <div class="form-group"><label>CTA URL</label><input type="url" name="cta_url"></div>
+    <div class="form-group"><label>Image</label><input type="file" name="image" accept="image/*"></div>
+  </div>
+  <button type="submit" class="btn btn-primary">Add Program</button>
+</form>
+
+<table class="admin-table" style="margin-top: 2rem;">
+  <thead><tr><th>Title</th><th>Active</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for s in services %}
+    <tr>
+      <td><strong>{{ s.title }}</strong><br><small>{{ s.description[:80] }}{% if s.description|length > 80 %}…{% endif %}</small></td>
+      <td>{{ 'Yes' if s.is_active else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin.edit_learning', lid=s.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('admin.move_learning', lid=s.id, direction='up') }}" style="display:inline"><button class="btn btn-sm">↑</button></form>
+        <form method="post" action="{{ url_for('admin.move_learning', lid=s.id, direction='down') }}" style="display:inline"><button class="btn btn-sm">↓</button></form>
+        <form method="post" action="{{ url_for('admin.delete_learning', lid=s.id) }}" style="display:inline" onsubmit="return confirm('Delete this program?')">
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

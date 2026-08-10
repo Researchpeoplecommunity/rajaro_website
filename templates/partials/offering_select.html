@@ -1,0 +1,35 @@
+<div class="form-group">
+  <label for="{{ select_id }}">{{ label|default('Product or Service') }}</label>
+  {% if hint %}<p class="field-hint">{{ hint }}</p>{% endif %}
+  <select id="{{ select_id }}"
+          name="offerings"
+          multiple
+          placeholder="Type to search…"
+          data-offering-select
+          data-form-id="{{ form_id }}"
+          data-result-id="{{ result_id }}">
+    {% if products %}
+    <optgroup label="Products">
+      {% for product in products %}
+      <option value="p:{{ product.name }}">{{ product.name }}</option>
+      {% endfor %}
+    </optgroup>
+    {% endif %}
+    {% for group_label, categories in service_groups %}
+    {% if categories %}
+    <optgroup label="{{ group_label }}">
+      {% for cat in categories %}
+        {% for item in cat.items if item.is_active %}
+        <option value="s:{{ cat.title }} — {{ item.name }}">{{ cat.title }} — {{ item.name }}</option>
+        {% endfor %}
+      {% endfor %}
+    </optgroup>
+    {% endif %}
+    {% endfor %}
+    <optgroup label="Other">
+      <option value="other:General Enquiry">General Enquiry</option>
+      <option value="other:Partnership">Partnership</option>
+      <option value="other:Support">Support</option>
+    </optgroup>
+  </select>
+</div>

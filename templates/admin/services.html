@@ -1,0 +1,63 @@
+{% extends "admin/base.html" %}
+{% block title %}Services{% endblock %}
+{% block content %}
+<h1>Service Categories</h1>
+<form method="post" action="{{ url_for('admin.add_category') }}" class="admin-form">
+  <div class="form-grid">
+    <div class="form-group"><label>Title *</label><input type="text" name="title" required></div>
+    <div class="form-group"><label>Group</label>
+      <select name="service_group">
+        <option value="technology">Technology Services</option>
+        <option value="digital_marketing">Digital Marketing Services</option>
+      </select>
+    </div>
+    <div class="form-group full-width"><label>Subtitle</label><input type="text" name="subtitle"></div>
+    <div class="form-group full-width"><label>Description</label><textarea name="description" rows="3"></textarea></div>
+  </div>
+  <button type="submit" class="btn btn-primary">Add Category</button>
+</form>
+
+<h2>Technology Services</h2>
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Items</th><th>Active</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for cat in categories if cat.service_group == 'technology' %}
+    <tr>
+      <td>{{ cat.title }}</td>
+      <td>{{ cat.items|length }}</td>
+      <td>{{ 'Yes' if cat.is_active else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin.edit_category', cid=cat.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('admin.move_category', cid=cat.id, direction='up') }}" style="display:inline"><button class="btn btn-sm">↑</button></form>
+        <form method="post" action="{{ url_for('admin.move_category', cid=cat.id, direction='down') }}" style="display:inline"><button class="btn btn-sm">↓</button></form>
+        <form method="post" action="{{ url_for('admin.delete_category', cid=cat.id) }}" style="display:inline" onsubmit="return confirm('Delete this category?')">
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Digital Marketing Services</h2>
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Items</th><th>Active</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for cat in categories if cat.service_group == 'digital_marketing' %}
+    <tr>
+      <td>{{ cat.title }}</td>
+      <td>{{ cat.items|length }}</td>
+      <td>{{ 'Yes' if cat.is_active else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin.edit_category', cid=cat.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('admin.move_category', cid=cat.id, direction='up') }}" style="display:inline"><button class="btn btn-sm">↑</button></form>
+        <form method="post" action="{{ url_for('admin.move_category', cid=cat.id, direction='down') }}" style="display:inline"><button class="btn btn-sm">↓</button></form>
+        <form method="post" action="{{ url_for('admin.delete_category', cid=cat.id) }}" style="display:inline" onsubmit="return confirm('Delete this category?')">
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

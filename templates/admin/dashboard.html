@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats-grid">
+  <div class="stat-card"><span class="stat-num">{{ stats.contacts }}</span><span>Contact Messages</span><small>{{ stats.unread_contacts }} unread</small></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.affiliates }}</span><span>Affiliate Applications</span></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.applications }}</span><span>Job Applications</span></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.consultations }}</span><span>Consultations</span></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.suggestions }}</span><span>Suggestions</span><small>{{ stats.unread_suggestions }} unread</small></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.jobs }}</span><span>Active Jobs</span></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.blogs }}</span><span>Blog Posts</span></div>
+</div>
+
+<div class="admin-two-col">
+  <section>
+    <h2>Recent Contact Messages</h2>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for c in recent_contacts %}
+        <tr><td>{{ c.name }}</td><td>{{ c.email }}</td><td>{{ c.created_at.strftime('%d %b %Y') }}</td></tr>
+        {% else %}
+        <tr><td colspan="3">No messages yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  <section>
+    <h2>Recent Applications</h2>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Type</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for a in recent_apps %}
+        <tr><td><a href="{{ url_for('admin.view_application', aid=a.id) }}">{{ a.full_name }}</a></td><td>{{ a.application_type }}</td><td>{{ a.status }}</td></tr>
+        {% else %}
+        <tr><td colspan="3">No applications yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import lead_sentence %}
+{% block title %}Products — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">Built by Rajaro</p>
+    <h1>Products that scale</h1>
+    <p class="lead">Platforms engineered for real-world impact — explore what we've launched.</p>
+  </div>
+</section>
+
+<section class="overview-bar">
+  <div class="container overview-grid">
+    <div class="overview-item">
+      <span class="overview-num">{{ products|length }}</span>
+      <span class="overview-label">Live platforms</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Multi-industry</span>
+      <span class="overview-label">Ecosystems</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Global-ready</span>
+      <span class="overview-label">Architecture</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Try live</span>
+      <span class="overview-label">Visit & explore</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if products %}
+    <div class="product-showcase-grid">
+      {% for product in products %}
+      <article class="product-showcase-card">
+        <div class="product-showcase-top">
+          {% include "partials/product_logo.html" %}
+          <h2>{{ product.name }}</h2>
+          {% if product.tagline %}<p class="card-sub">{{ product.tagline }}</p>{% endif %}
+        </div>
+        {{ lead_sentence(product.short_description or product.description) }}
+        <div class="product-card-actions">
+          <a href="{{ url_for('public.product_detail', slug=product.slug) }}" class="btn btn-primary">View More</a>
+          {% if product.cta_url %}
+          <a href="{{ product.cta_url }}" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
+            {{ product.cta_text or 'Try it' }}
+          </a>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-note">No products available yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

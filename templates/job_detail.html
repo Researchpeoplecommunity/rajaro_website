@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import content_highlights, lead_sentence %}
+{% block title %}{{ job.title }} — Career — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">{{ job.reference_code }}</p>
+    <h1>{{ job.title }}</h1>
+    <div class="meta-pills meta-pills-center">
+      {% if job.mode %}<span class="meta-pill">{{ job.mode }}</span>{% endif %}
+      {% if job.job_type %}<span class="meta-pill">{{ job.job_type }}</span>{% endif %}
+      {% if job.shift %}<span class="meta-pill">{{ job.shift }}</span>{% endif %}
+      {% if job.location %}<span class="meta-pill">{{ job.location }}</span>{% endif %}
+      {% if job.openings %}<span class="meta-pill">{{ job.openings }} opening{{ 's' if job.openings != 1 else '' }}</span>{% endif %}
+      {% if job.income %}<span class="meta-pill">{{ job.income }}</span>{% endif %}
+      {% if job.expiry_date %}<span class="meta-pill">Apply by {{ job.expiry_date.strftime('%d %b %Y') }}</span>{% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container detail-layout">
+    <div class="detail-main">
+      {% if job.short_description %}
+      {{ lead_sentence(job.short_description) }}
+      {% endif %}
+      {{ content_highlights(job.description, 8) }}
+      {% if job.skills %}
+      <div class="detail-section">
+        <h2>Skills</h2>
+        <div class="feature-tags">
+          {% for skill in job.skills.split(',') %}
+          {% if skill.strip() %}<span class="service-tag">{{ skill.strip() }}</span>{% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% if job.education or job.gender %}
+      <div class="detail-section detail-meta-row">
+        {% if job.education %}<span><strong>Education:</strong> {{ job.education }}</span>{% endif %}
+        {% if job.gender %}<span><strong>Gender:</strong> {{ job.gender }}</span>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+    <aside class="detail-aside">
+      <div class="aside-card">
+        <h3>Interested?</h3>
+        <p>Apply for a full-time role or internship in minutes.</p>
+        <div class="stack-actions">
+          <a href="{{ url_for('public.job_apply', job_id=job.id, type='hiring') }}" class="btn btn-primary">Apply — Hiring</a>
+          <a href="{{ url_for('public.job_apply', job_id=job.id, type='internship') }}" class="btn btn-outline">Apply — Internship</a>
+          <a href="{{ url_for('public.career') }}" class="btn btn-outline">All Jobs</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

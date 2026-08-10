@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import lead_sentence %}
+{% block title %}Services — {{ site_name }}{% endblock %}
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.default.min.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<section class="page-hero services-hero">
+  <div class="container services-hero-inner">
+    <p class="eyebrow dark">What we deliver</p>
+    <h1>Services built for growth</h1>
+    {% set intro_lead = services_intro.strip().replace('\n', ' ').split('. ')[0] %}
+    <p class="lead">{{ intro_lead }}{% if not intro_lead.endswith('.') %}.{% endif %}</p>
+  </div>
+</section>
+
+<nav class="services-jump" aria-label="Service sections">
+  <div class="container services-jump-inner">
+    <a href="#technology" class="services-jump-link">Technology</a>
+    <a href="#marketing" class="services-jump-link">Digital Marketing</a>
+    <a href="#consult" class="services-jump-link services-jump-cta">Book Consultation</a>
+  </div>
+</nav>
+
+<section class="services-overview">
+  <div class="container services-overview-grid">
+    <div class="services-overview-item">
+      <span class="services-overview-num">{{ tech_categories|length }}</span>
+      <span class="services-overview-label">Technology areas</span>
+    </div>
+    <div class="services-overview-item">
+      <span class="services-overview-num">{{ marketing_categories|length }}</span>
+      <span class="services-overview-label">Marketing disciplines</span>
+    </div>
+    <div class="services-overview-item">
+      <span class="services-overview-num">End-to-end</span>
+      <span class="services-overview-label">Strategy to launch</span>
+    </div>
+    <div class="services-overview-item">
+      <span class="services-overview-num">Scalable</span>
+      <span class="services-overview-label">Startup to enterprise</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="technology">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow dark">Technology Services</p>
+      <h2>Engineer what’s next</h2>
+      <p class="section-lead">Software, AI, cloud, and security — pick a capability, not a paragraph.</p>
+    </div>
+    {% if tech_categories %}
+    <div class="service-card-grid">
+      {% for cat in tech_categories %}
+      <article class="service-card" id="service-{{ cat.id }}">
+        <div class="service-card-top">
+          <span class="service-card-count">{{ cat.items|selectattr('is_active')|list|length }} skills</span>
+          <h3>{{ cat.title }}</h3>
+          {% if cat.subtitle %}<p class="service-card-sub">{{ cat.subtitle }}</p>{% endif %}
+        </div>
+        {{ lead_sentence(cat.description) }}
+        <div class="service-tags" aria-label="Expertise for {{ cat.title }}">
+          {% for item in cat.items if item.is_active %}
+          <span class="service-tag">{{ item.name }}</span>
+          {% endfor %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-note">No technology services available yet.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section section-alt" id="marketing">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow dark">Digital Marketing Services</p>
+      <h2>Grow with precision</h2>
+      <p class="section-lead">Data-driven campaigns and brand strategies — at a glance.</p>
+    </div>
+    {% if marketing_categories %}
+    <div class="service-card-grid">
+      {% for cat in marketing_categories %}
+      <article class="service-card" id="service-{{ cat.id }}">
+        <div class="service-card-top">
+          <span class="service-card-count">{{ cat.items|selectattr('is_active')|list|length }} skills</span>
+          <h3>{{ cat.title }}</h3>
+          {% if cat.subtitle %}<p class="service-card-sub">{{ cat.subtitle }}</p>{% endif %}
+        </div>
+        {{ lead_sentence(cat.description) }}
+        <div class="service-tags" aria-label="Expertise for {{ cat.title }}">
+          {% for item in cat.items if item.is_active %}
+          <span class="service-tag">{{ item.name }}</span>
+          {% endfor %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-note">No digital marketing services available yet.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" id="consult">
+  <div class="container consultation-block consultation-card">
+    <div>
+      <p class="eyebrow dark">Next step</p>
+      <h2>{{ consultation_headline }}</h2>
+      {% set consult_lead = consultation_text.strip().replace('\n', ' ').split('. ')[0] %}
+      <p>{{ consult_lead }}{% if not consult_lead.endswith('.') %}.{% endif %}</p>
+    </div>
+    <button type="button" class="btn btn-primary btn-lg"
+            onclick="document.getElementById('consultation-modal').classList.add('open')">
+      Book Consultation
+    </button>
+  </div>
+</section>
+
+<div id="consultation-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="this.closest('.modal').classList.remove('open')">&times;</button>
+    <h3>Book Consultation</h3>
+    <form id="consultation-form"
+          hx-post="{{ url_for('public.consultation') }}"
+          hx-target="#consultation-result"
+          hx-swap="innerHTML">
+      <div id="consultation-result"></div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="c-name">Name *</label>
+          <input type="text" id="c-name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="c-email">Email *</label>
+          <input type="email" id="c-email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="c-phone">Phone</label>
+          <input type="tel" id="c-phone" name="phone">
+        </div>
+        <div class="form-group">
+          <label for="c-company">Company</label>
+          <input type="text" id="c-company" name="company">
+        </div>
+        <div class="form-group full-width suggestion-form">
+          {% with select_id='consult-offering-select', form_id='consultation-form', result_id='consultation-result', label='Service Interested In', hint='Search and select products or services.' %}
+          {% include "partials/offering_select.html" %}
+          {% endwith %}
+        </div>
+        <div class="form-group full-width">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" name="message" rows="4"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+<script src="{{ url_for('static', filename='js/offering-select.js') }}"></script>
+{% endblock %}

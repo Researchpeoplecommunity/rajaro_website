@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Suggestions — {{ site_name }}{% endblock %}
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.default.min.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">Your voice</p>
+    <h1>Suggestions</h1>
+    <p class="lead">Help us improve — pick a product or service, share your idea, attach a PDF.</p>
+  </div>
+</section>
+
+<section class="overview-bar">
+  <div class="container overview-grid">
+    <div class="overview-item">
+      <span class="overview-num">1</span>
+      <span class="overview-label">Select offering</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">2</span>
+      <span class="overview-label">Write feedback</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">3</span>
+      <span class="overview-label">Attach PDF</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">4</span>
+      <span class="overview-label">Submit</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container form-card suggestion-form">
+    <p class="card-tag">Suggestion form</p>
+    <div id="suggestion-result"></div>
+    <form id="suggestion-form"
+          hx-post="{{ url_for('public.suggestions') }}"
+          hx-target="#suggestion-result"
+          hx-swap="innerHTML"
+          hx-encoding="multipart/form-data"
+          enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone">
+      </div>
+      {% with select_id='offering-select', form_id='suggestion-form', result_id='suggestion-result', label='Product or Service *', hint='Search and select one or more.' %}
+      {% include "partials/offering_select.html" %}
+      {% endwith %}
+      <div class="form-group">
+        <label for="message">Your Suggestion *</label>
+        <textarea id="message" name="message" rows="5" required placeholder="What's your idea?"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="pdf">Attach PDF *</label>
+        <input type="file" id="pdf" name="pdf" accept=".pdf,application/pdf" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Suggestion</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+<script src="{{ url_for('static', filename='js/offering-select.js') }}"></script>
+{% endblock %}

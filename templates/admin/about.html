@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<h1>About Page</h1>
+<form method="post" class="admin-form">
+  <input type="hidden" name="action" value="content">
+  {% for key, label in [('about_what_we_do','What We Do'),('about_who_we_are','Who We Are'),('mission','Mission'),('vision','Vision'),('about_founder','About Founder')] %}
+  <div class="form-group"><label>{{ label }}</label><textarea name="{{ key }}" rows="4">{{ content.get(key, '') }}</textarea></div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<p><em>Social media links are managed under <a href="{{ url_for('admin.social_links') }}">Social Links</a>.</em></p>
+
+<h2>Clients</h2>
+<ul class="admin-list">{% for c in clients %}<li>{{ c.name }}</li>{% endfor %}</ul>
+<form method="post" class="inline-form"><input type="hidden" name="action" value="client"><input type="text" name="client_name" placeholder="Client name" required><button type="submit" class="btn btn-sm">Add Client</button></form>
+
+<h2>Why Choose Items</h2>
+<ul class="admin-list">
+  {% for w in why_items %}
+  <li>
+    {{ w.text }} — {{ 'Active' if w.is_active else 'Hidden' }}
+    <form method="post" action="{{ url_for('admin.toggle_why', wid=w.id) }}" style="display:inline"><button class="btn btn-sm">Toggle</button></form>
+    <form method="post" action="{{ url_for('admin.delete_why', wid=w.id) }}" style="display:inline"><button class="btn btn-sm btn-danger">Delete</button></form>
+  </li>
+  {% endfor %}
+</ul>
+<form method="post" class="inline-form"><input type="hidden" name="action" value="why"><input type="text" name="why_text" placeholder="Why choose item" required><button type="submit" class="btn btn-sm">Add</button></form>
+{% endblock %}

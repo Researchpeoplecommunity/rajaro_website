@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% from "macros/content_helpers.html" import lead_sentence %}
+{% block title %}Blog — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">Insights</p>
+    <h1>Blog</h1>
+    <p class="lead">Ideas, updates, and perspectives — quick reads, not long essays on this page.</p>
+  </div>
+</section>
+
+<section class="overview-bar">
+  <div class="container overview-grid">
+    <div class="overview-item">
+      <span class="overview-num">{{ posts|length }}</span>
+      <span class="overview-label">Articles</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Fresh</span>
+      <span class="overview-label">Latest thinking</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Tech & business</span>
+      <span class="overview-label">Topics</span>
+    </div>
+    <div class="overview-item">
+      <span class="overview-num">Read more</span>
+      <span class="overview-label">Full articles inside</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if posts %}
+    <div class="blog-grid">
+      {% for post in posts %}
+      <article class="blog-card">
+        {% if post.featured_image %}
+        <img src="{{ url_for('public.uploaded_file', filename=post.featured_image) }}" alt="{{ post.title }}" class="blog-image">
+        {% endif %}
+        <div class="blog-card-body">
+          {% if post.published_at %}
+          <time datetime="{{ post.published_at.isoformat() }}">{{ post.published_at.strftime('%d %b %Y') }}</time>
+          {% endif %}
+          <h2><a href="{{ url_for('public.blog_detail', slug=post.slug) }}">{{ post.title }}</a></h2>
+          {{ lead_sentence(post.excerpt or post.content) }}
+          <a href="{{ url_for('public.blog_detail', slug=post.slug) }}" class="link-arrow">Read article →</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-note">No blog posts yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

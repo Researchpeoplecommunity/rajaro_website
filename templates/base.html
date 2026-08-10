@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ site_name }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+  <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="{{ url_for('public.home') }}" class="logo">
+        <img src="{{ url_for('static', filename='images/rajaro-logo.png') }}" alt="{{ site_name }}" class="logo-img">
+      </a>
+      <nav class="main-nav">
+        <a href="{{ url_for('public.home') }}">Home</a>
+        <a href="{{ url_for('public.about') }}">About Us</a>
+        <a href="{{ url_for('public.services') }}">Services</a>
+        <a href="{{ url_for('public.products') }}">Products</a>
+        <a href="{{ url_for('public.contact') }}">Contact</a>
+        <a href="{{ url_for('public.learning') }}">Learning Program</a>
+        <a href="{{ url_for('public.career') }}">Career</a>
+        <a href="{{ url_for('public.blog') }}">Blog</a>
+        <a href="{{ url_for('public.suggestions') }}">Suggestions</a>
+      </nav>
+      <div class="header-actions">
+        <form action="{{ url_for('public.search') }}" method="get" class="search-form">
+          <input type="search" name="q" placeholder="Search" aria-label="Search">
+        </form>
+        <a href="{{ url_for('admin.login') }}" class="btn btn-outline btn-sm">Log In</a>
+      </div>
+      <button class="mobile-toggle" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>{{ site_name }}</h3>
+        <p>Technology, innovation, and digital transformation partner.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a href="{{ url_for('public.services') }}">Services</a>
+        <a href="{{ url_for('public.products') }}">Products</a>
+        <a href="{{ url_for('public.career') }}">Career</a>
+        <a href="{{ url_for('public.contact') }}">Contact</a>
+      </div>
+      <div>
+        <h4>Follow us</h4>
+        <div class="social-links">
+          {% for link in social_links %}
+          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; {{ site_name }}. All rights reserved.</p>
+    </div>
+  </footer>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

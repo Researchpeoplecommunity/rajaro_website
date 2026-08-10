@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Contact — {{ site_name }}{% endblock %}
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.default.min.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="eyebrow dark">Let's talk</p>
+    <h1>Contact Us</h1>
+    <p class="lead">One message away from your next move — tell us what you're looking for.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-col contact-layout">
+    <div class="form-card suggestion-form">
+      <p class="card-tag">Send a message</p>
+      <h2 style="margin-bottom:1rem;font-size:1.25rem;">Quick form</h2>
+      <div id="contact-result"></div>
+      <form id="contact-form"
+            hx-post="{{ url_for('public.contact') }}"
+            hx-target="#contact-result"
+            hx-swap="innerHTML">
+        <div class="form-group">
+          <label for="name">Name *</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" id="country" name="country">
+        </div>
+        {% with select_id='contact-offering-select', form_id='contact-form', result_id='contact-result', label='I am looking for', hint='Search and select one or more products or services.' %}
+        {% include "partials/offering_select.html" %}
+        {% endwith %}
+        <div class="form-group">
+          <label for="requirements">Brief overview</label>
+          <textarea id="requirements" name="requirements" rows="4" placeholder="What do you need?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <aside class="contact-aside">
+      <p class="card-tag">Reach us directly</p>
+      <h2 style="margin-bottom:1.25rem;font-size:1.25rem;">{{ site_name }}</h2>
+      <div class="contact-facts">
+        <div class="contact-fact">
+          <span class="contact-fact-label">Location</span>
+          <strong>{{ address }}</strong>
+        </div>
+        <div class="contact-fact">
+          <span class="contact-fact-label">Phone</span>
+          <strong><a href="tel:{{ phone }}">{{ phone }}</a></strong>
+        </div>
+        <div class="contact-fact">
+          <span class="contact-fact-label">Email</span>
+          <strong><a href="mailto:{{ email }}">{{ email }}</a></strong>
+        </div>
+        <div class="contact-fact">
+          <span class="contact-fact-label">Hours</span>
+          <strong>{{ hours }}</strong>
+        </div>
+      </div>
+      <p class="contact-note">General queries, escalations & business enquiries — our team is ready to help.</p>
+    </aside>
+  </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
+<script src="{{ url_for('static', filename='js/offering-select.js') }}"></script>
+{% endblock %}

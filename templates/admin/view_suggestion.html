@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% block title %}Suggestion #{{ submission.id }}{% endblock %}
+{% block content %}
+<h1>Suggestion from {{ submission.name }}</h1>
+<dl class="detail-list">
+  <dt>Email</dt><dd><a href="mailto:{{ submission.email }}">{{ submission.email }}</a></dd>
+  <dt>Phone</dt><dd>{{ submission.phone or '—' }}</dd>
+  <dt>Submitted</dt><dd>{{ submission.created_at.strftime('%d %b %Y, %H:%M UTC') }}</dd>
+  <dt>Products</dt><dd>{{ submission.selected_products or '—' }}</dd>
+  <dt>Services</dt><dd>{{ submission.selected_services or '—' }}</dd>
+  <dt>Suggestion</dt><dd style="white-space: pre-wrap;">{{ submission.message }}</dd>
+  <dt>PDF</dt>
+  <dd>
+    {% if submission.pdf_filename %}
+    <a href="{{ url_for('public.uploaded_file', filename=submission.pdf_filename) }}" target="_blank" class="btn btn-sm btn-primary">Download PDF</a>
+    {% else %}—{% endif %}
+  </dd>
+</dl>
+<a href="{{ url_for('admin.suggestions_admin') }}">← Back to Suggestions</a>
+{% endblock %}
