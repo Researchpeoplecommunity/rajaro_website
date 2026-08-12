@@ -13,10 +13,19 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a href="{{ url_for('public.home') }}" class="logo">
-        <img src="{{ url_for('static', filename='images/rajaro-logo.png') }}" alt="{{ site_name }}" class="logo-img">
-      </a>
-      <nav class="main-nav">
+      <div class="header-top">
+        <a href="{{ url_for('public.home') }}" class="logo">
+          <img src="{{ url_for('static', filename='images/rajaro-logo.png') }}" alt="{{ site_name }}" class="logo-img">
+        </a>
+        <div class="header-actions">
+          <form action="{{ url_for('public.search') }}" method="get" class="search-form">
+            <input type="search" name="q" placeholder="Search" aria-label="Search">
+          </form>
+          <a href="{{ url_for('admin.login') }}" class="btn btn-outline btn-sm">Log In</a>
+        </div>
+        <button type="button" class="mobile-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">☰</button>
+      </div>
+      <nav id="main-nav" class="main-nav">
         <a href="{{ url_for('public.home') }}">Home</a>
         <a href="{{ url_for('public.about') }}">About Us</a>
         <a href="{{ url_for('public.services') }}">Services</a>
@@ -27,13 +36,6 @@
         <a href="{{ url_for('public.blog') }}">Blog</a>
         <a href="{{ url_for('public.suggestions') }}">Suggestions</a>
       </nav>
-      <div class="header-actions">
-        <form action="{{ url_for('public.search') }}" method="get" class="search-form">
-          <input type="search" name="q" placeholder="Search" aria-label="Search">
-        </form>
-        <a href="{{ url_for('admin.login') }}" class="btn btn-outline btn-sm">Log In</a>
-      </div>
-      <button class="mobile-toggle" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">☰</button>
     </div>
   </header>
 
@@ -76,5 +78,6 @@
     </div>
   </footer>
   {% block extra_scripts %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/mobile-nav.js') }}"></script>
 </body>
 </html>
