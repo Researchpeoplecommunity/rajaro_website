@@ -9,6 +9,10 @@
   <div class="container services-hero-inner">
     <p class="eyebrow dark">What we deliver</p>
     <h1>Services built for growth</h1>
+    <button type="button" class="btn btn-primary services-hero-cta"
+            onclick="document.getElementById('consultation-modal').classList.add('open')">
+      Book Consultation
+    </button>
     {% set intro_lead = services_intro.strip().replace('\n', ' ').split('. ')[0] %}
     <p class="lead">{{ intro_lead }}{% if not intro_lead.endswith('.') %}.{% endif %}</p>
   </div>
@@ -18,7 +22,6 @@
   <div class="container services-jump-inner">
     <a href="#technology" class="services-jump-link">Technology</a>
     <a href="#marketing" class="services-jump-link">Digital Marketing</a>
-    <a href="#consult" class="services-jump-link services-jump-cta">Book Consultation</a>
   </div>
 </nav>
 

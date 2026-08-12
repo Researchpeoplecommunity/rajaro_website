@@ -387,6 +387,7 @@ a:hover { text-decoration: underline; }
 .services-hero { text-align: center; padding: 3.5rem 0; }
 .services-hero-inner { max-width: 640px; margin: 0 auto; }
 .services-hero h1 { font-size: clamp(1.85rem, 4vw, 2.5rem); margin-bottom: 0.75rem; }
+.services-hero-cta { margin: 0.25rem auto 1.25rem; }
 
 .services-jump {
   position: sticky; top: 64px; z-index: 50;
