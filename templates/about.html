@@ -89,7 +89,14 @@
     </div>
     <div class="client-grid">
       {% for client in clients %}
-      <div class="client-badge">{{ client.name }}</div>
+      <div class="client-card">
+        {% if client.image_filename %}
+        <img src="{{ url_for('public.uploaded_file', filename=client.image_filename) }}" alt="{{ client.name }}" class="client-logo-img">
+        {% else %}
+        <span class="client-badge">{{ client.name }}</span>
+        {% endif %}
+        {% if client.image_filename %}<span class="client-name">{{ client.name }}</span>{% endif %}
+      </div>
       {% endfor %}
     </div>
   </div>

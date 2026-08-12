@@ -608,10 +608,19 @@ a:hover { text-decoration: underline; }
 .check-list li { padding: 0.4rem 0; }
 .check-list li::before { content: "✓ "; color: var(--primary); font-weight: bold; }
 .mission-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; }
-.client-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; justify-content: center; }
+.client-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem; justify-content: center; align-items: center; }
+.client-card {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  min-width: 120px; max-width: 160px;
+}
+.client-logo-img {
+  max-width: 140px; max-height: 72px; width: auto; height: auto;
+  object-fit: contain; display: block;
+}
+.client-name { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-align: center; }
 .client-badge {
   background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px;
-  padding: 0.75rem 1.25rem; font-weight: 600;
+  padding: 0.75rem 1.25rem; font-weight: 600; text-align: center;
 }
 
 /* About page */

@@ -12,8 +12,55 @@
 <p><em>Social media links are managed under <a href="{{ url_for('admin.social_links') }}">Social Links</a>.</em></p>
 
 <h2>Clients</h2>
-<ul class="admin-list">{% for c in clients %}<li>{{ c.name }}</li>{% endfor %}</ul>
-<form method="post" class="inline-form"><input type="hidden" name="action" value="client"><input type="text" name="client_name" placeholder="Client name" required><button type="submit" class="btn btn-sm">Add Client</button></form>
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr><th>Logo</th><th>Name</th><th>Update Logo</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for c in clients %}
+      <tr>
+        <td>
+          {% if c.image_filename %}
+          <img src="{{ url_for('public.uploaded_file', filename=c.image_filename) }}" alt="{{ c.name }}" class="admin-client-thumb">
+          {% else %}
+          <span class="admin-client-placeholder">{{ c.name[0] }}</span>
+          {% endif %}
+        </td>
+        <td>{{ c.name }}</td>
+        <td>
+          <form method="post" action="{{ url_for('admin.update_client_logo', cid=c.id) }}" enctype="multipart/form-data" class="inline-form">
+            <input type="file" name="client_logo" accept="image/*" required>
+            <button type="submit" class="btn btn-sm">Upload</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('admin.delete_client', cid=c.id) }}" style="display:inline" onsubmit="return confirm('Remove this client?')">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No clients yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="admin-form client-add-form">
+  <input type="hidden" name="action" value="client">
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="client_name">Client name</label>
+      <input type="text" id="client_name" name="client_name" placeholder="Client name" required>
+    </div>
+    <div class="form-group">
+      <label for="client_logo">Logo (optional)</label>
+      <input type="file" id="client_logo" name="client_logo" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-sm btn-primary">Add Client</button>
+</form>
 
 <h2>Why Choose Items</h2>
 <ul class="admin-list">

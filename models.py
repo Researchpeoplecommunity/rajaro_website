@@ -146,6 +146,7 @@ class ProductPricingRow(db.Model):
 class ClientLogo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
+    image_filename = db.Column(db.String(300))
     sort_order = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
 

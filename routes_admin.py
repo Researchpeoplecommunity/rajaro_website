@@ -418,8 +418,18 @@ def about():
         if action == "client":
             name = request.form.get("client_name", "").strip()
             if name:
-                db.session.add(ClientLogo(name=name))
+                from utils.uploads import save_upload
+
+                logo_file = request.files.get("client_logo")
+                image_filename = None
+                if logo_file and logo_file.filename:
+                    image_filename = save_upload(logo_file, prefix="client", extensions={"png", "jpg", "jpeg", "gif", "webp", "svg"})
+                max_order = db.session.query(db.func.max(ClientLogo.sort_order)).scalar() or 0
+                db.session.add(
+                    ClientLogo(name=name, image_filename=image_filename, sort_order=max_order + 1)
+                )
                 db.session.commit()
+                flash("Client added.", "success")
         elif action == "why":
             text = request.form.get("why_text", "").strip()
             if text:
@@ -437,6 +447,32 @@ def about():
     content = {c.key: c.value for c in SiteContent.query.filter(SiteContent.key.like("about_%")).all()}
     content.update({c.key: c.value for c in SiteContent.query.filter(SiteContent.key.in_(["mission", "vision"])).all()})
     return render_template("admin/about.html", clients=clients, why_items=why_items, content=content)
+
+
+@admin_bp.route("/about/client/<int:cid>/logo", methods=["POST"])
+@admin_required
+def update_client_logo(cid):
+    from utils.uploads import save_upload
+
+    client = ClientLogo.query.get_or_404(cid)
+    logo_file = request.files.get("client_logo")
+    if logo_file and logo_file.filename:
+        filename = save_upload(logo_file, prefix="client", extensions={"png", "jpg", "jpeg", "gif", "webp", "svg"})
+        if filename:
+            client.image_filename = filename
+            db.session.commit()
+            flash("Client logo updated.", "success")
+    return redirect(url_for("admin.about"))
+
+
+@admin_bp.route("/about/client/<int:cid>/delete", methods=["POST"])
+@admin_required
+def delete_client(cid):
+    client = ClientLogo.query.get_or_404(cid)
+    db.session.delete(client)
+    db.session.commit()
+    flash("Client removed.", "success")
+    return redirect(url_for("admin.about"))
 
 
 @admin_bp.route("/learning", methods=["GET", "POST"])

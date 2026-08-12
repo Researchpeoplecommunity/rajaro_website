@@ -100,6 +100,16 @@ body.admin-body {
 
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
+.admin-client-thumb {
+  width: 72px; height: 40px; object-fit: contain; display: block;
+  border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem; background: #fff;
+}
+.admin-client-placeholder {
+  display: inline-grid; place-items: center; width: 72px; height: 40px;
+  border: 1px dashed var(--border); border-radius: 6px; font-weight: 700; color: #64748b;
+}
+.client-add-form { margin-top: 1rem; max-width: 640px; }
+
 @media (max-width: 768px) {
   body.admin-body { flex-direction: column; }
   .admin-sidebar { width: 100%; height: auto; position: static; }

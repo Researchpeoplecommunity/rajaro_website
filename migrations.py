@@ -70,6 +70,8 @@ def migrate_schema():
     _add_column("why_choose_item", "is_active", f"BOOLEAN DEFAULT {bool_def}")
     _add_column("why_choose_item", "sort_order", "INTEGER DEFAULT 0")
 
+    _add_column("client_logo", "image_filename", "VARCHAR(300)")
+
     # Wider field for multi-select product/service labels from contact/consultation forms
     _widen_column("consultation_booking", "service_interest", "TEXT")
     _widen_column("contact_submission", "looking_for", "TEXT")
