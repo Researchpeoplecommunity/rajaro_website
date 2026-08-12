@@ -1,0 +1,24 @@
+<div class="form-group">
+  <label for="{{ select_id }}">{{ label|default('Service Interested In') }}</label>
+  {% if hint %}<p class="field-hint">{{ hint }}</p>{% endif %}
+  <select id="{{ select_id }}"
+          name="offerings"
+          multiple
+          placeholder="Type to search…"
+          data-offering-select
+          data-form-id="{{ form_id }}"
+          data-result-id="{{ result_id }}"
+          data-placeholder="{{ placeholder|default('Type to search services…') }}">
+    {% for group_label, categories in service_groups %}
+    {% if categories %}
+    <optgroup label="{{ group_label }}">
+      {% for cat in categories %}
+        {% for item in cat.items if item.is_active %}
+        <option value="s:{{ cat.title }} — {{ item.name }}">{{ cat.title }} — {{ item.name }}</option>
+        {% endfor %}
+      {% endfor %}
+    </optgroup>
+    {% endif %}
+    {% endfor %}
+  </select>
+</div>
