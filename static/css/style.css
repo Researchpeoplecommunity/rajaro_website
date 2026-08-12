@@ -939,14 +939,51 @@ a:hover { text-decoration: underline; }
   .product-showcase-grid { grid-template-columns: 1fr; }
   .detail-layout { grid-template-columns: 1fr; }
   .detail-aside { position: static; }
-  .header-inner { flex-wrap: wrap; }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "logo actions toggle"
+      "nav nav nav";
+    align-items: center;
+    column-gap: 0.65rem;
+    row-gap: 0;
+    min-height: 56px;
+  }
+  .logo { grid-area: logo; }
+  .header-actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .search-form { flex: 1; min-width: 0; max-width: 140px; }
+  .search-form input { width: 100%; min-width: 0; }
+  .header-actions .btn-sm { padding: 0.35rem 0.65rem; font-size: 0.75rem; white-space: nowrap; }
+  .mobile-toggle {
+    grid-area: toggle;
+    display: block;
+    margin-left: 0;
+    line-height: 1;
+    padding: 0.25rem;
+  }
   .main-nav {
-    display: none; width: 100%; flex-direction: column; flex-wrap: wrap;
-    overflow-x: visible; padding: 0.75rem 1.5rem 0; gap: 0;
+    grid-area: nav;
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: visible;
+    padding: 0.5rem 0 0;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--border);
+    gap: 0;
   }
   .main-nav a { padding: 0.55rem 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   body.nav-open .main-nav { display: flex; }
-  .mobile-toggle { display: block; margin-left: auto; }
   .form-grid { grid-template-columns: 1fr; }
   .hero-orb-3, .hero-ring-2 { display: none; }
 }
@@ -957,6 +994,8 @@ a:hover { text-decoration: underline; }
   .digital-wheel { width: min(100%, 360px); }
   .digital-wheel-item { width: 96px; }
   .wheel-text { font-size: 0.65rem; }
+  .search-form { max-width: 110px; }
+  .header-actions .btn-sm { padding: 0.3rem 0.5rem; font-size: 0.7rem; }
   .about-facts-grid { grid-template-columns: 1fr; }
   .services-overview-grid { grid-template-columns: 1fr 1fr; }
   .overview-grid { grid-template-columns: 1fr 1fr; }
