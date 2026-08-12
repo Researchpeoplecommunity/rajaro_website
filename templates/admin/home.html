@@ -1,0 +1,140 @@
+{% extends "admin/base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<h1>Home Page</h1>
+<p class="admin-lead">Edit all home page text, promises, wheel labels, and feature pillars.</p>
+
+<form method="post" class="admin-form">
+  <input type="hidden" name="form_type" value="content">
+  <h2>Hero &amp; sections</h2>
+  <div class="form-grid">
+    {% for key in home_content_keys %}
+    <div class="form-group {% if key in ['hero_hook','curiosity_band','home_cta_text'] %}full-width{% endif %}">
+      <label for="content_{{ key }}">{{ key|replace('_',' ')|title }}</label>
+      {% if key in ['hero_hook','curiosity_band','home_cta_text'] %}
+      <textarea id="content_{{ key }}" name="content_{{ key }}" rows="3">{{ content.get(key, '') }}</textarea>
+      {% else %}
+      <input type="text" id="content_{{ key }}" name="content_{{ key }}" value="{{ content.get(key, '') }}">
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <button type="submit" class="btn btn-primary">Save Home Content</button>
+</form>
+
+<hr>
+<h2>Hero Promises</h2>
+<ul class="admin-list">
+  {% for p in promises %}
+  <li>{{ p.text }}
+    <form method="post" action="{{ url_for('admin.delete_promise', pid=p.id) }}" style="display:inline">
+      <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+<form method="post" action="{{ url_for('admin.add_promise') }}" class="inline-form">
+  <input type="text" name="text" placeholder="New promise text" required>
+  <button type="submit" class="btn btn-sm">Add Promise</button>
+</form>
+
+<hr>
+<h2>Digital World Wheel</h2>
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr><th>Label</th><th>Icon</th><th>Color</th><th>Order</th><th>Active</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for item in wheel_items %}
+      <tr>
+        <form method="post">
+          <input type="hidden" name="form_type" value="edit_wheel">
+          <input type="hidden" name="item_id" value="{{ item.id }}">
+          <td><input type="text" name="label" value="{{ item.label }}" required></td>
+          <td>
+            <select name="icon_key">
+              {% for icon in ['innovation','rocket','shield-check','shield-star','brain','layers'] %}
+              <option value="{{ icon }}" {% if item.icon_key == icon %}selected{% endif %}>{{ icon }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td><input type="color" name="color" value="{{ item.color }}"></td>
+          <td><input type="number" name="sort_order" value="{{ item.sort_order }}" min="0" style="width:4rem"></td>
+          <td><input type="checkbox" name="is_active" {% if item.is_active %}checked{% endif %}></td>
+          <td>
+            <button type="submit" class="btn btn-sm">Save</button>
+          </td>
+        </form>
+        <td>
+          <form method="post" action="{{ url_for('admin.delete_wheel_item', wid=item.id) }}" style="display:inline">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<form method="post" class="inline-form">
+  <input type="hidden" name="form_type" value="add_wheel">
+  <input type="text" name="label" placeholder="Wheel label" required>
+  <select name="icon_key">
+    {% for icon in ['innovation','rocket','shield-check','shield-star','brain','layers'] %}
+    <option value="{{ icon }}">{{ icon }}</option>
+    {% endfor %}
+  </select>
+  <input type="color" name="color" value="#6d28d9">
+  <button type="submit" class="btn btn-sm">Add Wheel Item</button>
+</form>
+
+<hr>
+<h2>Feature Pillars</h2>
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr><th>Title</th><th>Description</th><th>Icon</th><th>Color</th><th>Order</th><th>Active</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for item in pillars %}
+      <tr>
+        <form method="post">
+          <input type="hidden" name="form_type" value="edit_pillar">
+          <input type="hidden" name="item_id" value="{{ item.id }}">
+          <td><input type="text" name="title" value="{{ item.title }}" required></td>
+          <td><input type="text" name="description" value="{{ item.description }}" required></td>
+          <td>
+            <select name="icon_key">
+              {% for icon in ['custom','delivery','tech','customer'] %}
+              <option value="{{ icon }}" {% if item.icon_key == icon %}selected{% endif %}>{{ icon }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td><input type="color" name="color" value="{{ item.color }}"></td>
+          <td><input type="number" name="sort_order" value="{{ item.sort_order }}" min="0" style="width:4rem"></td>
+          <td><input type="checkbox" name="is_active" {% if item.is_active %}checked{% endif %}></td>
+          <td><button type="submit" class="btn btn-sm">Save</button></td>
+        </form>
+        <td>
+          <form method="post" action="{{ url_for('admin.delete_home_pillar', pid=item.id) }}" style="display:inline">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<form method="post" class="inline-form">
+  <input type="hidden" name="form_type" value="add_pillar">
+  <input type="text" name="title" placeholder="Pillar title" required>
+  <input type="text" name="description" placeholder="Pillar description" required>
+  <select name="icon_key">
+    {% for icon in ['custom','delivery','tech','customer'] %}
+    <option value="{{ icon }}">{{ icon }}</option>
+    {% endfor %}
+  </select>
+  <input type="color" name="color" value="#2563eb">
+  <button type="submit" class="btn btn-sm">Add Pillar</button>
+</form>
+{% endblock %}

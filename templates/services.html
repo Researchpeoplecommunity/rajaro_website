@@ -147,7 +147,7 @@
           <input type="text" id="c-company" name="company">
         </div>
         <div class="form-group full-width suggestion-form">
-          {% with select_id='consult-offering-select', form_id='consultation-form', result_id='consultation-result', label='Service Interested In', hint='Search and select products or services.' %}
+          {% with select_id='consult-offering-select', form_id='consultation-form', result_id='consultation-result', label='Service Interested In', hint='Search and select one or more services.', services_only=true, placeholder='Type to search services…' %}
           {% include "partials/offering_select.html" %}
           {% endwith %}
         </div>

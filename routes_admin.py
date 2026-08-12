@@ -25,6 +25,8 @@ from models import (
     ConsultationBooking,
     ContactSubmission,
     HeroPromise,
+    HomePillar,
+    HomeWheelItem,
     JobApplication,
     JobPosting,
     LearningService,
@@ -163,6 +165,116 @@ def delete_promise(pid):
     db.session.delete(p)
     db.session.commit()
     return redirect(url_for("admin.content"))
+
+
+HOME_CONTENT_KEYS = [
+    "hero_eyebrow",
+    "hero_title",
+    "hero_subtitle",
+    "hero_hook",
+    "hero_btn_explore",
+    "hero_btn_about",
+    "promise_card_title",
+    "promise_teaser_text",
+    "curiosity_band",
+    "digital_world_headline",
+    "home_cta_eyebrow",
+    "home_cta_title",
+    "home_cta_text",
+    "home_cta_button",
+    "footer_tagline",
+]
+
+
+@admin_bp.route("/home", methods=["GET", "POST"])
+@admin_required
+def home_admin():
+    if request.method == "POST":
+        form_type = request.form.get("form_type", "content")
+        if form_type == "content":
+            for key in HOME_CONTENT_KEYS:
+                field = request.form.get(f"content_{key}")
+                if field is not None:
+                    set_content(key, field)
+            db.session.commit()
+            flash("Home page content updated.", "success")
+        elif form_type == "add_wheel":
+            label = request.form.get("label", "").strip()
+            if label:
+                max_order = db.session.query(db.func.max(HomeWheelItem.sort_order)).scalar() or 0
+                db.session.add(
+                    HomeWheelItem(
+                        label=label,
+                        icon_key=request.form.get("icon_key", "innovation"),
+                        color=request.form.get("color", "#6d28d9"),
+                        sort_order=max_order + 1,
+                    )
+                )
+                db.session.commit()
+        elif form_type == "add_pillar":
+            title = request.form.get("title", "").strip()
+            description = request.form.get("description", "").strip()
+            if title and description:
+                max_order = db.session.query(db.func.max(HomePillar.sort_order)).scalar() or 0
+                db.session.add(
+                    HomePillar(
+                        title=title,
+                        description=description,
+                        icon_key=request.form.get("icon_key", "custom"),
+                        color=request.form.get("color", "#2563eb"),
+                        sort_order=max_order + 1,
+                    )
+                )
+                db.session.commit()
+        elif form_type == "edit_wheel":
+            item = HomeWheelItem.query.get_or_404(int(request.form.get("item_id")))
+            item.label = request.form.get("label", item.label).strip()
+            item.icon_key = request.form.get("icon_key", item.icon_key)
+            item.color = request.form.get("color", item.color)
+            item.sort_order = int(request.form.get("sort_order", item.sort_order) or 0)
+            item.is_active = request.form.get("is_active") == "on"
+            db.session.commit()
+        elif form_type == "edit_pillar":
+            item = HomePillar.query.get_or_404(int(request.form.get("item_id")))
+            item.title = request.form.get("title", item.title).strip()
+            item.description = request.form.get("description", item.description).strip()
+            item.icon_key = request.form.get("icon_key", item.icon_key)
+            item.color = request.form.get("color", item.color)
+            item.sort_order = int(request.form.get("sort_order", item.sort_order) or 0)
+            item.is_active = request.form.get("is_active") == "on"
+            db.session.commit()
+        return redirect(url_for("admin.home_admin"))
+
+    content = {c.key: c.value for c in SiteContent.query.filter(SiteContent.key.in_(HOME_CONTENT_KEYS)).all()}
+    promises = HeroPromise.query.order_by(HeroPromise.sort_order).all()
+    wheel_items = HomeWheelItem.query.order_by(HomeWheelItem.sort_order).all()
+    pillars = HomePillar.query.order_by(HomePillar.sort_order).all()
+    return render_template(
+        "admin/home.html",
+        content=content,
+        promises=promises,
+        wheel_items=wheel_items,
+        pillars=pillars,
+        home_content_keys=HOME_CONTENT_KEYS,
+    )
+
+
+@admin_bp.route("/home/wheel/<int:wid>/delete", methods=["POST"])
+@admin_required
+def delete_wheel_item(wid):
+    item = HomeWheelItem.query.get_or_404(wid)
+    db.session.delete(item)
+    db.session.commit()
+    return redirect(url_for("admin.home_admin"))
+
+
+@admin_bp.route("/home/pillar/<int:pid>/delete", methods=["POST"])
+@admin_required
+def delete_home_pillar(pid):
+    item = HomePillar.query.get_or_404(pid)
+    db.session.delete(item)
+    db.session.commit()
+    return redirect(url_for("admin.home_admin"))
 
 
 @admin_bp.route("/services")

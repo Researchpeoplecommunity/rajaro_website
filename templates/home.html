@@ -11,102 +11,83 @@
   </div>
   <div class="container hero-grid">
     <div class="hero-content">
-      <p class="eyebrow">Welcome to Rajaro</p>
+      <p class="eyebrow">{{ hero_eyebrow }}</p>
       <h1>{{ hero_title }}</h1>
       <p class="hero-sub">{{ hero_subtitle }}</p>
-      <p class="hero-hook">Something powerful is being built from India — for the world. The question is: where will you fit in?</p>
+      <p class="hero-hook">{{ hero_hook }}</p>
       <div class="hero-actions">
-        <a href="#explore" class="btn btn-primary">Start Exploring</a>
-        <a href="{{ url_for('public.about') }}" class="btn btn-outline">Who We Are</a>
+        <a href="#digital-world" class="btn btn-primary">{{ hero_btn_explore }}</a>
+        <a href="{{ url_for('public.about') }}" class="btn btn-outline">{{ hero_btn_about }}</a>
       </div>
     </div>
     <div class="promises-card">
-      <h3>Our Promise</h3>
+      <h3>{{ promise_card_title }}</h3>
       <ul class="promise-list">
         {% for p in promises[:2] %}
         <li>{{ p.text }}</li>
         {% endfor %}
       </ul>
-      <a href="{{ url_for('public.about') }}" class="hero-teaser-link">There's more to the story →</a>
+      <a href="{{ url_for('public.about') }}" class="hero-teaser-link">{{ promise_teaser_text }}</a>
     </div>
   </div>
 </section>
 
 <section class="curiosity-band">
   <div class="container">
-    <p class="curiosity-text">What if your next breakthrough is just one click away?</p>
+    <p class="curiosity-text">{{ curiosity_band }}</p>
   </div>
 </section>
 
-<section class="section home-explore" id="explore">
-  <div class="container">
-    <div class="section-header">
-      <p class="eyebrow dark">Your journey starts here</p>
-      <h2>Choose your path</h2>
-      <p class="section-lead">We don't put everything on one page — each door opens to something different. Pick what pulls you in.</p>
+<section class="section home-digital-world" id="digital-world">
+  <div class="container digital-world-grid">
+    <div class="digital-wheel" aria-label="Our digital capabilities">
+      <div class="digital-wheel-center">
+        <img
+          src="{{ url_for('static', filename='images/home-digital-world.png') }}"
+          alt=""
+          class="digital-wheel-image"
+        >
+      </div>
+      <span class="digital-wheel-ring" aria-hidden="true"></span>
+      {% for item in wheel_items %}
+      <div class="digital-wheel-item digital-wheel-item-{{ loop.index }}">
+        <span class="wheel-icon" style="--wheel-color: {{ item.color }}">
+          {% set icon_key = item.icon_key %}
+          {% include 'partials/home_wheel_icon.html' %}
+        </span>
+        <span class="wheel-text">{{ item.label }}</span>
+      </div>
+      {% endfor %}
     </div>
-
-    <div class="explore-grid">
-      <a href="{{ url_for('public.about') }}" class="explore-card">
-        <span class="explore-label">01</span>
-        <h3>About Us</h3>
-        <p>Who stands behind the promise?</p>
-        <span class="explore-cta">Discover the story →</span>
-      </a>
-      <a href="{{ url_for('public.services') }}" class="explore-card">
-        <span class="explore-label">02</span>
-        <h3>Services</h3>
-        <p>What could we build together?</p>
-        <span class="explore-cta">See what's possible →</span>
-      </a>
-      <a href="{{ url_for('public.products') }}" class="explore-card explore-card-featured">
-        <span class="explore-label">03</span>
-        <h3>Products</h3>
-        <p>Two platforms. One bold vision.</p>
-        <span class="explore-cta">Meet Subitra & RajaroRise →</span>
-      </a>
-      <a href="{{ url_for('public.learning') }}" class="explore-card">
-        <span class="explore-label">04</span>
-        <h3>Learning Program</h3>
-        <p>Ready to grow beyond today?</p>
-        <span class="explore-cta">Explore programs →</span>
-      </a>
-      <a href="{{ url_for('public.career') }}" class="explore-card">
-        <span class="explore-label">05</span>
-        <h3>Career</h3>
-        <p>Could your next chapter start here?</p>
-        <span class="explore-cta">View opportunities →</span>
-      </a>
-      <a href="{{ url_for('public.blog') }}" class="explore-card">
-        <span class="explore-label">06</span>
-        <h3>Blog</h3>
-        <p>Ideas worth your time.</p>
-        <span class="explore-cta">Read latest insights →</span>
-      </a>
-      <a href="{{ url_for('public.suggestions') }}" class="explore-card">
-        <span class="explore-label">07</span>
-        <h3>Suggestions</h3>
-        <p>Help shape what we build next.</p>
-        <span class="explore-cta">Share your idea →</span>
-      </a>
-      <a href="{{ url_for('public.contact') }}" class="explore-card explore-card-accent">
-        <span class="explore-label">→</span>
-        <h3>Contact</h3>
-        <p>When you're ready — we're listening.</p>
-        <span class="explore-cta">Let's connect →</span>
-      </a>
+    <div class="digital-world-copy">
+      <h2>{{ digital_world_headline }}</h2>
     </div>
   </div>
 </section>
 
-<section class="section section-alt home-closer">
+<section class="home-pillars">
+  <div class="container pillars-grid">
+    {% for pillar in pillars %}
+    <div class="pillar-card">
+      <span class="pillar-icon" style="--pillar-color: {{ pillar.color }}">
+        {% set icon_key = pillar.icon_key %}
+        {% include 'partials/home_pillar_icon.html' %}
+      </span>
+      <h3>{{ pillar.title }}</h3>
+      <p>{{ pillar.description }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section home-closer">
   <div class="container cta-banner cta-curiosity">
     <div>
-      <p class="eyebrow dark">Still curious?</p>
-      <h2>The best conversations start with a single hello.</h2>
-      <p>Don't scroll past your next opportunity — step through the door.</p>
+      <p class="eyebrow dark">{{ home_cta_eyebrow }}</p>
+      <h2>{{ home_cta_title }}</h2>
+      <p>{{ home_cta_text }}</p>
     </div>
-    <a href="{{ url_for('public.contact') }}" class="btn btn-primary btn-lg">Get in Touch</a>
+    <a href="{{ url_for('public.contact') }}" class="btn btn-primary btn-lg">{{ home_cta_button }}</a>
   </div>
 </section>
 {% endblock %}

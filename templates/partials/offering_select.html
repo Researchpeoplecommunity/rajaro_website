@@ -7,8 +7,9 @@
           placeholder="Type to search…"
           data-offering-select
           data-form-id="{{ form_id }}"
-          data-result-id="{{ result_id }}">
-    {% if products %}
+          data-result-id="{{ result_id }}"
+          data-placeholder="{{ placeholder|default('Type to search products or services…') }}">
+    {% if products and not services_only %}
     <optgroup label="Products">
       {% for product in products %}
       <option value="p:{{ product.name }}">{{ product.name }}</option>

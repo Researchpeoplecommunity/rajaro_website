@@ -25,6 +25,8 @@ from models import (
     ConsultationBooking,
     ContactSubmission,
     HeroPromise,
+    HomePillar,
+    HomeWheelItem,
     JobApplication,
     JobPosting,
     LearningService,
@@ -50,6 +52,9 @@ def upload_folder():
 def site_context():
     return {
         "site_name": get_content("site_name", "Rajaro Solutions Private Limited"),
+        "footer_tagline": get_content(
+            "footer_tagline", "Technology, innovation, and digital transformation partner."
+        ),
         "social_links": active_social_links(),
     }
 
@@ -76,12 +81,40 @@ def health():
 @public_bp.route("/")
 def home():
     promises = HeroPromise.query.filter_by(is_active=True).order_by(HeroPromise.sort_order).all()
+    wheel_items = HomeWheelItem.query.filter_by(is_active=True).order_by(HomeWheelItem.sort_order).all()
+    pillars = HomePillar.query.filter_by(is_active=True).order_by(HomePillar.sort_order).all()
     return render_template(
         "home.html",
         promises=promises,
+        wheel_items=wheel_items,
+        pillars=pillars,
+        hero_eyebrow=get_content("hero_eyebrow", "Welcome to Rajaro"),
         hero_title=get_content("hero_title"),
         hero_subtitle=get_content("hero_subtitle"),
-        hero_intro=get_content("hero_intro"),
+        hero_hook=get_content(
+            "hero_hook",
+            "Something powerful is being built from India — for the world. "
+            "The question is: where will you fit in?",
+        ),
+        hero_btn_explore=get_content("hero_btn_explore", "Start Exploring"),
+        hero_btn_about=get_content("hero_btn_about", "Who We Are"),
+        promise_card_title=get_content("promise_card_title", "Our Promise"),
+        promise_teaser_text=get_content("promise_teaser_text", "There's more to the story →"),
+        curiosity_band=get_content(
+            "curiosity_band", "What if your next breakthrough is just one click away?"
+        ),
+        digital_world_headline=get_content(
+            "digital_world_headline", "WE HELP TO SUCCEED IN THE DIGITAL WORLD"
+        ),
+        home_cta_eyebrow=get_content("home_cta_eyebrow", "Still curious?"),
+        home_cta_title=get_content(
+            "home_cta_title", "The best conversations start with a single hello."
+        ),
+        home_cta_text=get_content(
+            "home_cta_text",
+            "Don't scroll past your next opportunity — step through the door.",
+        ),
+        home_cta_button=get_content("home_cta_button", "Get in Touch"),
     )
 
 
@@ -103,12 +136,11 @@ def about():
 @public_bp.route("/services")
 def services():
     tech_categories, marketing_categories = grouped_services()
-    products, service_groups = suggestion_form_options()
+    _, service_groups = suggestion_form_options()
     return render_template(
         "services.html",
         tech_categories=tech_categories,
         marketing_categories=marketing_categories,
-        products=products,
         service_groups=service_groups,
         services_intro=get_content("services_intro"),
         consultation_headline=get_content("consultation_headline"),

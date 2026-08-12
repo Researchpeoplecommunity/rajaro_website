@@ -4,14 +4,11 @@
 {% block content %}
 <section class="page-hero page-hero-compact">
   <div class="container product-hero">
-    <div class="product-hero-content">
-      <p class="eyebrow dark">Product</p>
-      <h1>{{ product.name }}</h1>
-      {% if product.tagline %}<p class="lead">{{ product.tagline }}</p>{% endif %}
-    </div>
     <div class="product-hero-logo">
       {% include "partials/product_logo.html" %}
     </div>
+    <h1 class="product-hero-title">{{ product.name }}</h1>
+    {% if product.tagline %}<p class="product-hero-tagline">{{ product.tagline }}</p>{% endif %}
   </div>
 </section>
 

@@ -8,6 +8,8 @@ from models import (
     BlogPost,
     ClientLogo,
     HeroPromise,
+    HomePillar,
+    HomeWheelItem,
     JobPosting,
     LearningService,
     Product,
@@ -42,8 +44,24 @@ def seed_database():
 
     defaults = {
         "site_name": "Rajaro Solutions Private Limited",
+        "hero_eyebrow": "Welcome to Rajaro",
         "hero_title": "I am Rajaro",
         "hero_subtitle": "From India for the world",
+        "hero_hook": (
+            "Something powerful is being built from India — for the world. "
+            "The question is: where will you fit in?"
+        ),
+        "hero_btn_explore": "Start Exploring",
+        "hero_btn_about": "Who We Are",
+        "promise_card_title": "Our Promise",
+        "promise_teaser_text": "There's more to the story →",
+        "curiosity_band": "What if your next breakthrough is just one click away?",
+        "digital_world_headline": "WE HELP TO SUCCEED IN THE DIGITAL WORLD",
+        "home_cta_eyebrow": "Still curious?",
+        "home_cta_title": "The best conversations start with a single hello.",
+        "home_cta_text": "Don't scroll past your next opportunity — step through the door.",
+        "home_cta_button": "Get in Touch",
+        "footer_tagline": "Technology, innovation, and digital transformation partner.",
         "hero_intro": (
             "Technology is the driving force behind modern business success. "
             "At Rajaro Solutions Private Limited, we help startups, SMEs, enterprises, "
@@ -121,6 +139,26 @@ def seed_database():
     ]
     for i, text in enumerate(promises):
         db.session.add(HeroPromise(text=text, sort_order=i))
+
+    wheel_items = [
+        ("Innovation Driven Solutions", "innovation", "#6d28d9"),
+        ("Future Ready Tech", "rocket", "#ea580c"),
+        ("Trusted By Businesses", "shield-check", "#2563eb"),
+        ("Secure & Reliable", "shield-star", "#0891b2"),
+        ("Intelligent Solutions", "brain", "#9333ea"),
+        ("Scalable Platforms", "layers", "#dc2626"),
+    ]
+    for i, (label, icon_key, color) in enumerate(wheel_items):
+        db.session.add(HomeWheelItem(label=label, icon_key=icon_key, color=color, sort_order=i))
+
+    pillars = [
+        ("Custom Solutions", "Tailored to your business goals and challenges.", "custom", "#2563eb"),
+        ("End-to-End Delivery", "From strategy and design to development and support.", "delivery", "#9333ea"),
+        ("Modern Technologies", "Cloud, AI, Blockchain and more to drive innovation.", "tech", "#16a34a"),
+        ("Customer First", "Your success is our priority in everything we do.", "customer", "#ea580c"),
+    ]
+    for i, (title, description, icon_key, color) in enumerate(pillars):
+        db.session.add(HomePillar(title=title, description=description, icon_key=icon_key, color=color, sort_order=i))
 
     categories_data = [
         {
@@ -538,8 +576,58 @@ def patch_database():
     _seed_social_links()
     _patch_service_groups()
     _patch_product_short_descriptions()
+    _patch_home_content()
 
     db.session.commit()
+
+
+def _patch_home_content():
+    """Ensure home page CMS keys and blocks exist on existing databases."""
+    home_defaults = {
+        "hero_eyebrow": "Welcome to Rajaro",
+        "hero_hook": (
+            "Something powerful is being built from India — for the world. "
+            "The question is: where will you fit in?"
+        ),
+        "hero_btn_explore": "Start Exploring",
+        "hero_btn_about": "Who We Are",
+        "promise_card_title": "Our Promise",
+        "promise_teaser_text": "There's more to the story →",
+        "curiosity_band": "What if your next breakthrough is just one click away?",
+        "digital_world_headline": "WE HELP TO SUCCEED IN THE DIGITAL WORLD",
+        "home_cta_eyebrow": "Still curious?",
+        "home_cta_title": "The best conversations start with a single hello.",
+        "home_cta_text": "Don't scroll past your next opportunity — step through the door.",
+        "home_cta_button": "Get in Touch",
+        "footer_tagline": "Technology, innovation, and digital transformation partner.",
+    }
+    for key, value in home_defaults.items():
+        if not SiteContent.query.filter_by(key=key).first():
+            set_content(key, value)
+
+    if not HomeWheelItem.query.first():
+        wheel_items = [
+            ("Innovation Driven Solutions", "innovation", "#6d28d9"),
+            ("Future Ready Tech", "rocket", "#ea580c"),
+            ("Trusted By Businesses", "shield-check", "#2563eb"),
+            ("Secure & Reliable", "shield-star", "#0891b2"),
+            ("Intelligent Solutions", "brain", "#9333ea"),
+            ("Scalable Platforms", "layers", "#dc2626"),
+        ]
+        for i, (label, icon_key, color) in enumerate(wheel_items):
+            db.session.add(HomeWheelItem(label=label, icon_key=icon_key, color=color, sort_order=i))
+
+    if not HomePillar.query.first():
+        pillars = [
+            ("Custom Solutions", "Tailored to your business goals and challenges.", "custom", "#2563eb"),
+            ("End-to-End Delivery", "From strategy and design to development and support.", "delivery", "#9333ea"),
+            ("Modern Technologies", "Cloud, AI, Blockchain and more to drive innovation.", "tech", "#16a34a"),
+            ("Customer First", "Your success is our priority in everything we do.", "customer", "#ea580c"),
+        ]
+        for i, (title, description, icon_key, color) in enumerate(pillars):
+            db.session.add(
+                HomePillar(title=title, description=description, icon_key=icon_key, color=color, sort_order=i)
+            )
 
 
 def _seed_social_links():

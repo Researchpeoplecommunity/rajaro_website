@@ -8,7 +8,7 @@
     var ts = new TomSelect(selectEl, {
       plugins: ["remove_button"],
       maxOptions: null,
-      placeholder: "Type to search products or services…",
+      placeholder: selectEl.dataset.placeholder || "Type to search products or services…",
       hideSelected: true,
       closeAfterSelect: false,
       searchField: ["text", "optgroup"],

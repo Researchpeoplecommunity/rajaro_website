@@ -46,6 +46,25 @@ class HeroPromise(db.Model):
     is_active = db.Column(db.Boolean, default=True)
 
 
+class HomeWheelItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    label = db.Column(db.String(120), nullable=False)
+    icon_key = db.Column(db.String(40), default="innovation")
+    color = db.Column(db.String(20), default="#6d28d9")
+    sort_order = db.Column(db.Integer, default=0)
+    is_active = db.Column(db.Boolean, default=True)
+
+
+class HomePillar(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    description = db.Column(db.String(300), nullable=False)
+    icon_key = db.Column(db.String(40), default="custom")
+    color = db.Column(db.String(20), default="#2563eb")
+    sort_order = db.Column(db.Integer, default=0)
+    is_active = db.Column(db.Boolean, default=True)
+
+
 class ServiceCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
