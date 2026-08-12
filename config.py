@@ -46,7 +46,7 @@ class Config:
     UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", str(BASE_DIR / "static" / "uploads"))
     MAX_CONTENT_LENGTH = int(os.environ.get("MAX_CONTENT_LENGTH", 8 * 1024 * 1024))
 
-    NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "contact@rajaro.com")
+    NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "rajarosolutions@gmail.com")
     MAIL_SERVER = os.environ.get("MAIL_SERVER", "")
     MAIL_PORT = int(os.environ.get("MAIL_PORT", "587"))
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "")

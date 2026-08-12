@@ -74,7 +74,7 @@ Set these in Render if not using Blueprint defaults:
 | `DATABASE_URL` | Yes | From Render PostgreSQL (auto-linked in Blueprint) |
 | `FLASK_ENV` | Yes | `production` |
 | `BEHIND_PROXY` | Recommended | `1` — enables correct HTTPS behind Render proxy |
-| `NOTIFY_EMAIL` | Recommended | Where form alerts go — default: `contact@rajaro.com` |
+| `NOTIFY_EMAIL` | Recommended | Where form alerts go — default: `rajarosolutions@gmail.com` |
 | `MAIL_SERVER` | For email alerts | SMTP host (e.g. `smtp.gmail.com`) |
 | `MAIL_PORT` | Optional | Default: `587` |
 | `MAIL_USERNAME` | For email alerts | SMTP login |
@@ -114,7 +114,7 @@ UPLOAD_FOLDER=/var/data/uploads
 - [ ] `/health` returns 200 after deploy
 - [ ] Admin login works at `/admin`
 - [ ] Test contact, consultation, and suggestion forms
-- [ ] Set `MAIL_SERVER`, `MAIL_USERNAME`, `MAIL_PASSWORD` in Render for email alerts to `contact@rajaro.com`
+- [ ] Set `MAIL_SERVER`, `MAIL_USERNAME`, `MAIL_PASSWORD` in Render for email alerts to `rajarosolutions@gmail.com`
 - [ ] Custom domain DNS configured (if applicable)
 
 ## Tech Stack

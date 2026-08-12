@@ -17,7 +17,7 @@ def _mail_settings():
         "password": current_app.config.get("MAIL_PASSWORD", ""),
         "use_tls": current_app.config.get("MAIL_USE_TLS", True),
         "from_addr": current_app.config.get("MAIL_FROM", ""),
-        "notify_to": current_app.config.get("NOTIFY_EMAIL", "contact@rajaro.com"),
+        "notify_to": current_app.config.get("NOTIFY_EMAIL", "rajarosolutions@gmail.com"),
     }
 
 
