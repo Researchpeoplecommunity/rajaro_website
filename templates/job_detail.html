@@ -45,11 +45,9 @@
     <aside class="detail-aside">
       <div class="aside-card">
         <h3>Interested?</h3>
-        <p>Apply for a full-time role or internship in minutes.</p>
+        <p>Apply for this full-time role in minutes.</p>
         <div class="stack-actions">
           <a href="{{ url_for('public.job_apply', job_id=job.id, type='hiring') }}" class="btn btn-primary">Apply — Hiring</a>
-          <a href="{{ url_for('public.job_apply', job_id=job.id, type='internship') }}" class="btn btn-outline">Apply — Internship</a>
-          <a href="{{ url_for('public.career') }}" class="btn btn-outline">All Jobs</a>
         </div>
       </div>
     </aside>
