@@ -161,6 +161,11 @@ a:hover { text-decoration: underline; }
 .hero-sub { font-size: 1.25rem; opacity: 0.9; margin: 0.5rem 0 1rem; }
 .hero .lead { opacity: 0.85; margin-bottom: 1.5rem; }
 .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-cta-label {
+  display: inline-block; margin: 0;
+  font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em;
+  color: #fff; opacity: 0.95;
+}
 .hero .btn-outline { border-color: #fff; color: #fff; }
 .hero .btn-outline:hover { background: #fff; color: var(--primary); }
 
