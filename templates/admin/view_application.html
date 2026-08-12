@@ -5,18 +5,34 @@
 <p><strong>Job:</strong> {{ application.job.title if application.job else '—' }} | <strong>Type:</strong> {{ application.application_type }} | <strong>Applied:</strong> {{ application.created_at.strftime('%d %b %Y') }}</p>
 
 <dl class="detail-list">
-  <dt>Email</dt><dd>{{ application.email or '—' }}</dd>
+  <dt>Email</dt><dd>{% if application.email %}<a href="mailto:{{ application.email }}">{{ application.email }}</a>{% else %}—{% endif %}</dd>
   <dt>Phone</dt><dd>{{ application.phone or '—' }}</dd>
+  <dt>Country</dt><dd>{{ application.country or '—' }}</dd>
+  <dt>Address</dt><dd style="white-space: pre-wrap;">{{ application.address or '—' }}</dd>
+  <dt>Timezone</dt><dd>{{ application.timezone or '—' }}</dd>
   {% if application.application_type == 'internship' %}
-  <dt>School</dt><dd>{{ application.current_school or '—' }}</dd>
-  <dt>Year</dt><dd>{{ application.year_of_study or '—' }}</dd>
+  <dt>Current School</dt><dd>{{ application.current_school or '—' }}</dd>
+  <dt>Year of Study</dt><dd>{{ application.year_of_study or '—' }}</dd>
   <dt>Field of Study</dt><dd>{{ application.field_of_study or '—' }}</dd>
   <dt>GPA</dt><dd>{{ application.gpa or '—' }}</dd>
-  <dt>Internship Goals</dt><dd>{{ application.internship_goals or '—' }}</dd>
+  <dt>Preferred Start</dt><dd>{{ application.preferred_start.strftime('%d %b %Y') if application.preferred_start else '—' }}</dd>
+  <dt>Preferred End</dt><dd>{{ application.preferred_end.strftime('%d %b %Y') if application.preferred_end else '—' }}</dd>
+  <dt>First Internship</dt><dd>{{ application.first_internship or '—' }}</dd>
+  <dt>Internship Goals</dt><dd style="white-space: pre-wrap;">{{ application.internship_goals or '—' }}</dd>
+  <dt>Skills to Demonstrate</dt><dd style="white-space: pre-wrap;">{{ application.skills_to_demonstrate or '—' }}</dd>
+  <dt>Working Style</dt><dd style="white-space: pre-wrap;">{{ application.working_style or '—' }}</dd>
+  <dt>Specialization Field</dt><dd>{{ application.specialization_field or '—' }}</dd>
+  <dt>Learn During Internship</dt><dd style="white-space: pre-wrap;">{{ application.learn_during_internship or '—' }}</dd>
+  <dt>Code of Conduct Accepted</dt><dd>{{ 'Yes' if application.code_of_conduct else 'No' }}</dd>
   {% else %}
-  <dt>Work Experience</dt><dd>{{ application.work_experience or '—' }}</dd>
+  <dt>Work Experience</dt><dd style="white-space: pre-wrap;">{{ application.work_experience or '—' }}</dd>
   {% endif %}
-  <dt>Resume</dt><dd>{% if application.resume_filename %}<a href="{{ url_for('public.uploaded_file', filename=application.resume_filename) }}" target="_blank">Download</a>{% else %}—{% endif %}</dd>
+  <dt>Resume</dt>
+  <dd>
+    {% if application.resume_filename %}
+    <a href="{{ url_for('public.uploaded_file', filename=application.resume_filename) }}" target="_blank" class="btn btn-sm btn-primary">Download Resume</a>
+    {% else %}—{% endif %}
+  </dd>
 </dl>
 
 <form method="post" class="admin-form">

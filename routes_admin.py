@@ -553,7 +553,17 @@ def mark_contact_read(cid):
     sub = ContactSubmission.query.get_or_404(cid)
     sub.is_read = True
     db.session.commit()
-    return redirect(url_for("admin.contact_admin"))
+    return redirect(request.referrer or url_for("admin.contact_admin"))
+
+
+@admin_bp.route("/contact/submission/<int:cid>")
+@admin_required
+def view_contact(cid):
+    submission = ContactSubmission.query.get_or_404(cid)
+    if not submission.is_read:
+        submission.is_read = True
+        db.session.commit()
+    return render_template("admin/view_contact.html", submission=submission)
 
 
 @admin_bp.route("/consultations")
@@ -561,6 +571,25 @@ def mark_contact_read(cid):
 def consultations():
     bookings = ConsultationBooking.query.order_by(ConsultationBooking.created_at.desc()).all()
     return render_template("admin/consultations.html", bookings=bookings)
+
+
+@admin_bp.route("/consultations/<int:bid>")
+@admin_required
+def view_consultation(bid):
+    booking = ConsultationBooking.query.get_or_404(bid)
+    if not booking.is_read:
+        booking.is_read = True
+        db.session.commit()
+    return render_template("admin/view_consultation.html", booking=booking)
+
+
+@admin_bp.route("/consultations/<int:bid>/read", methods=["POST"])
+@admin_required
+def mark_consultation_read(bid):
+    booking = ConsultationBooking.query.get_or_404(bid)
+    booking.is_read = True
+    db.session.commit()
+    return redirect(url_for("admin.view_consultation", bid=bid))
 
 
 @admin_bp.route("/suggestions")

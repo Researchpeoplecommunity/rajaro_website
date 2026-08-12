@@ -2,12 +2,36 @@
 {% block title %}Consultations{% endblock %}
 {% block content %}
 <h1>Consultation Bookings</h1>
-<table class="admin-table">
-  <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Interest</th><th>Date</th></tr></thead>
-  <tbody>
-    {% for b in bookings %}
-    <tr><td>{{ b.name }}</td><td>{{ b.email }}</td><td>{{ b.phone }}</td><td>{{ b.service_interest }}</td><td>{{ b.created_at.strftime('%d %b %Y') }}</td></tr>
-    {% else %}<tr><td colspan="5">No bookings yet.</td></tr>{% endfor %}
-  </tbody>
-</table>
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Company</th>
+        <th>Interest</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr class="{% if not b.is_read %}unread{% endif %}">
+        <td>{{ b.name }}</td>
+        <td>{{ b.email }}</td>
+        <td>{{ b.phone or '—' }}</td>
+        <td>{{ b.company or '—' }}</td>
+        <td>{{ b.service_interest or '—' }}</td>
+        <td>{{ 'Read' if b.is_read else 'New' }}</td>
+        <td>{{ b.created_at.strftime('%d %b %Y') }}</td>
+        <td><a href="{{ url_for('admin.view_consultation', bid=b.id) }}">View</a></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8">No bookings yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

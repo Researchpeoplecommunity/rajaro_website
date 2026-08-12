@@ -11,16 +11,36 @@
 </form>
 
 <h2>Submissions</h2>
-<table class="admin-table">
-  <thead><tr><th>Name</th><th>Email</th><th>Looking For</th><th>Read</th><th>Date</th></tr></thead>
-  <tbody>
-    {% for s in submissions %}
-    <tr class="{% if not s.is_read %}unread{% endif %}">
-      <td>{{ s.name }}</td><td>{{ s.email }}</td><td>{{ s.looking_for }}</td>
-      <td>{% if not s.is_read %}<form method="post" action="{{ url_for('admin.mark_contact_read', cid=s.id) }}"><button class="btn btn-sm">Mark Read</button></form>{% else %}✓{% endif %}</td>
-      <td>{{ s.created_at.strftime('%d %b %Y') }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Country</th>
+        <th>Looking For</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in submissions %}
+      <tr class="{% if not s.is_read %}unread{% endif %}">
+        <td>{{ s.name }}</td>
+        <td>{{ s.email }}</td>
+        <td>{{ s.phone or '—' }}</td>
+        <td>{{ s.country or '—' }}</td>
+        <td>{{ s.looking_for or '—' }}</td>
+        <td>{{ 'Read' if s.is_read else 'New' }}</td>
+        <td>{{ s.created_at.strftime('%d %b %Y') }}</td>
+        <td><a href="{{ url_for('admin.view_contact', cid=s.id) }}">View</a></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8">No submissions yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

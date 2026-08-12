@@ -37,6 +37,7 @@ from models import (
     db,
 )
 from seed import get_content
+from utils.email_notify import send_form_notification
 from utils.uploads import allowed_file, save_document
 
 public_bp = Blueprint("public", __name__)
@@ -199,6 +200,19 @@ def contact():
         db.session.add(sub)
         db.session.commit()
 
+        send_form_notification(
+            f"New Contact Form — {name}",
+            [
+                ("Form", "Contact Us"),
+                ("Name", name),
+                ("Email", email),
+                ("Phone", sub.phone),
+                ("Country", sub.country),
+                ("Looking For", sub.looking_for),
+                ("Requirements", sub.requirements),
+            ],
+        )
+
         if request.headers.get("HX-Request"):
             return render_template(
                 "partials/form_success.html",
@@ -239,6 +253,19 @@ def consultation():
     )
     db.session.add(booking)
     db.session.commit()
+
+    send_form_notification(
+        f"New Consultation Request — {name}",
+        [
+            ("Form", "Book Consultation"),
+            ("Name", name),
+            ("Email", email),
+            ("Phone", booking.phone),
+            ("Company", booking.company),
+            ("Service Interest", booking.service_interest),
+            ("Message", booking.message),
+        ],
+    )
 
     if request.headers.get("HX-Request"):
         return render_template(
@@ -297,6 +324,20 @@ def suggestions():
         )
         db.session.add(submission)
         db.session.commit()
+
+        send_form_notification(
+            f"New Suggestion — {name}",
+            [
+                ("Form", "Suggestions"),
+                ("Name", name),
+                ("Email", email),
+                ("Phone", submission.phone),
+                ("Products", submission.selected_products),
+                ("Services", submission.selected_services),
+                ("Message", submission.message),
+                ("PDF", pdf_filename or "—"),
+            ],
+        )
 
         if request.headers.get("HX-Request"):
             return render_template(
@@ -384,6 +425,36 @@ def job_apply(job_id):
         )
         db.session.add(application)
         db.session.commit()
+
+        send_form_notification(
+            f"New Job Application — {full_name}",
+            [
+                ("Form", "Career Application"),
+                ("Job", job.title),
+                ("Reference", job.reference_code),
+                ("Type", app_type),
+                ("Full Name", full_name),
+                ("Email", application.email),
+                ("Phone", application.phone),
+                ("Country", application.country),
+                ("Address", application.address),
+                ("School", application.current_school),
+                ("Year of Study", application.year_of_study),
+                ("Field of Study", application.field_of_study),
+                ("GPA", application.gpa),
+                ("Work Experience", application.work_experience),
+                ("Timezone", application.timezone),
+                ("Preferred Start", str(application.preferred_start or "—")),
+                ("Preferred End", str(application.preferred_end or "—")),
+                ("First Internship", application.first_internship),
+                ("Internship Goals", application.internship_goals),
+                ("Skills to Demonstrate", application.skills_to_demonstrate),
+                ("Working Style", application.working_style),
+                ("Specialization", application.specialization_field),
+                ("Learn During Internship", application.learn_during_internship),
+                ("Resume", resume_filename or "—"),
+            ],
+        )
 
         if request.headers.get("HX-Request"):
             return render_template(

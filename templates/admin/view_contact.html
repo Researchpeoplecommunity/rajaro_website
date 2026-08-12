@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% block title %}Contact #{{ submission.id }}{% endblock %}
+{% block content %}
+<h1>Message from {{ submission.name }}</h1>
+<dl class="detail-list">
+  <dt>Name</dt><dd>{{ submission.name }}</dd>
+  <dt>Email</dt><dd><a href="mailto:{{ submission.email }}">{{ submission.email }}</a></dd>
+  <dt>Phone</dt><dd>{{ submission.phone or '—' }}</dd>
+  <dt>Country</dt><dd>{{ submission.country or '—' }}</dd>
+  <dt>Looking For</dt><dd>{{ submission.looking_for or '—' }}</dd>
+  <dt>Requirements / Overview</dt><dd style="white-space: pre-wrap;">{{ submission.requirements or '—' }}</dd>
+  <dt>Submitted</dt><dd>{{ submission.created_at.strftime('%d %b %Y, %H:%M UTC') }}</dd>
+</dl>
+{% if not submission.is_read %}
+<form method="post" action="{{ url_for('admin.mark_contact_read', cid=submission.id) }}">
+  <button type="submit" class="btn btn-sm btn-primary">Mark as Read</button>
+</form>
+{% endif %}
+<p style="margin-top:1rem;"><a href="{{ url_for('admin.contact_admin') }}">← Back to Contact</a></p>
+{% endblock %}
